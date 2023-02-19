@@ -10,7 +10,7 @@ Equity-related tweets: 16374 tweets, 270 errors found (1.65%)
 Diversity-releated tweets: 31268 tweets, 170 errors found (0.54%)
 Justice-related tweets: 220900 tweets, 2326 errors found (10.53%)
 
-## Overall error rate in 30 min of search effort: 5.2%**
+## Overall error rate in 30 min of search effort: 5.2%
 
 ---
 
