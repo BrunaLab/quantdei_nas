@@ -5,10 +5,14 @@ I was investigating the potential for errors in the analyses of tweets related t
 
 There are many errors. Many. Boatloads. It is clear the NAS ananalysts did zero quality control.  A very quick look review found the following error rates within each category:
 
-Race-related tweets:  25167 tweets, 5112 errors found (20.31%). 
-Equity-related tweets: 16374 tweets, 270 errors found (1.65%). 
-Diversity-releated tweets: 31268 tweets, 170 errors found (0.54%). 
-Justice-related tweets: 220900 tweets, 2326 errors found (10.53%). 
+Race-related tweets:  25167 tweets, 5112 errors found (20.31%).  
+
+Equity-related tweets: 16374 tweets, 270 errors found (1.65%).  
+
+Diversity-releated tweets: 31268 tweets, 170 errors found (0.54%).  
+
+Justice-related tweets: 220900 tweets, 2326 errors found (10.53%).  
+
 
 ## Overall error rate in 30 min of search effort: 5.2%
 
