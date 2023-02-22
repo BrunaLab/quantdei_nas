@@ -19,7 +19,7 @@ json_dir <- glue("{here}/data/twitter/school_twitter_account_searches")
 bearer_token1 <- ""
 bearer_token <- ""
 
-schools <- fread(glue("{here}/data/uni_websites/top_100_schools_clean.csv"))
+schools <- fread(glue("{here}/data/uni_websites/university_info/top_100_schools_clean.csv"))
 schools[,short_name := map_chr(site, ~str_remove(.x, "\\.edu"))]
 
 get_school_twitter_handles <- function(school_f){
@@ -141,34 +141,34 @@ map(queries$rowid, ~get_tweets(.x))
 
 # Count all their total number of tweets ----------------------------------
 # 
-# for(school in schools){
-#   outfile <- glue("{here}/data/twitter/{school}_count.csv")
-#   
-#   if(file.exists(outfile)){
-#     print(paste0(outfile, " exists"))
-#     next
-#   }
-#   
-#   my_query1 <-  build_query(users = school)
-#   
-#   count <- count_all_tweets(
-#     query = my_query1,
-#     start_tweets = "2010-01-01T00:00:00Z",
-#     end_tweets = "2021-10-11T00:00:00Z",
-#     bearer_token = bearer_token,
-#     n = 100000,
-#     file = NULL,
-#     data_path = NULL,
-#     export_query = TRUE,
-#     bind_tweets = TRUE,
-#     granularity = "day",
-#     verbose = TRUE
-#   )
-# 
-#   fwrite(count, outfile)
-# 
-# }
-# 
+for(school in schools){
+   outfile <- glue("{here}/data/twitter/{school}_count.csv")
+
+   if(file.exists(outfile)){
+     print(paste0(outfile, " exists"))
+     next
+   }
+#
+   my_query1 <-  build_query(users = school)
+#
+   count <- count_all_tweets(
+     query = my_query1,
+     start_tweets = "2010-01-01T00:00:00Z",
+     end_tweets = "2021-10-11T00:00:00Z",
+     bearer_token = bearer_token,
+     n = 100000,
+     file = NULL,
+     data_path = NULL,
+     export_query = TRUE,
+     bind_tweets = TRUE,
+     granularity = "day",
+     verbose = TRUE
+   )
+
+   fwrite(count, outfile)
+
+ }
+#
 
 # tweets <-
 #   get_all_tweets(

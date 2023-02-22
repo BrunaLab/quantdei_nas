@@ -206,7 +206,8 @@ t %>%
   theme_classic() +
   # theme(axis.text.x = element_text(angle = 55, hjust=1, size = 7)) +
   # theme(plot.title = element_text(hjust = 0.5)) +
-  facet_wrap(~dei_term, ncol = 3, scales = "free_y") +
+  # facet_wrap(~dei_term, ncol = 3, scales = "free_y") +
+  facet_wrap(~dei_term, ncol = 3) +
   scale_x_date(breaks = function(x) seq.Date(from = as.Date("2015-01-01"), 
                                              to = as.Date("2021-01-01"), 
                                              by = "1 year"), date_labels = "%y", 
