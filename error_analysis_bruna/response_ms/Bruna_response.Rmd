@@ -1,0 +1,116 @@
+---
+title             : "Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars"
+shorttitle        : "Flawed data validation by the NAS"
+
+author: 
+  - name          : "Emilio M. Bruna"
+    affiliation   : "1,2"
+#    address       : "Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA"
+    email         : "embruna@ufl.edu"
+    # role:
+    #   - Methodology
+    #   - Data curation
+    #   - Investigation
+    #   - Funding acquisition
+    #   - Conceptualization
+    #   - Formal analysis
+    #   - Methodology
+    #   - Project administration
+    #   - Resources
+    #   - Software
+    #   - Supervision
+    #   - Validation
+    #   - Visualization
+    #   - Writing ??? original draft
+
+affiliation:
+  - id            : "1"
+    institution   : "Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA"
+  - id            : "2"
+    institution   : "Center for Latin American Studies, University of Florida, PO Box 115530, Gainesville, FL 32611-5530, USA"
+
+authornote:  |
+
+  Address for correspondence: Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA (embruna@ufl.edu)
+
+  All code and data used in this analysis are available at https://github.com/embruna/quantdei_nas. 
+
+# 
+# abstract: |
+#   Abstract of the paper.
+  
+  
+  
+keywords          : "Up,to,eight,keywords"
+wordcount         : "X"
+
+bibliography      : "NAS_response.bib"
+
+floatsintext      : no
+figurelist        : yes
+tablelist         : no
+footnotelist      : no
+numbersections    : no
+linenumbers       : yes
+mask              : no
+draft             : no
+# replace_ampersands: yes
+
+classoption       : "man, donotrepeattitle" # suppresses title on 1st page of MS
+output            : papaja::apa6_pdf
+mainfont: Times New Roman
+fontsize: 12pt
+csl: "science.csl"
+fig_caption: yes
+keep_tex: yes
+
+header-includes:
+  - \raggedbottom
+  - \usepackage{endfloat} #[nomarkers] excludes the {insert figure x around here] from main text. The others exclude the list of tables and figures. https://cs.brown.edu/about/system/managed/latex/doc/endfloat.pdf
+  - \usepackage{setspace}\doublespacing
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{tabu}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+
+---
+
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("NAS_response.bib")
+knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE)
+library(tidyverse)
+library(gridExtra)
+library(kableExtra)
+library(egg)
+library(magick)
+```
+
+
+```{r GlobalOptions, include=FALSE}
+options(knitr.duplicate.label = 'allow')
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+# knitr::opts_chunk$set(fig.pos = 'h')
+```
+
+
+
+
+
+
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+tweet_fail<-read_csv("./error_analysis_bruna/tweet_fail.csv",col_types = cols())
+twitter_fail_summary<-read_csv("./error_analysis_bruna/twitter_fail_summary.csv",col_types = cols())
+```
+
+<!-- # Introduction -->
+
+Efforts to advance Diversity, Equity, and Inclusion (hereafter, DEI) at universities in the United States have emerged as another contentious issue in an increasingly polarized political climate [@PlanDismantle2023]. While individuals and organizations critical of DEI often claim that these programs have become increasingly pervasive and ideological, this assertion is rarely supported with empirical evidence.  
+One organization that has been critical of DEI efforts is the National Association of Scholars (NAS), which defines its mission as "upholding the standards of a liberal arts education" [@UsNAS]. The NAS recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological], who claim it is the largest quantitative study to date of DEI-related language in the science, technology, engineering, and mathematics (STEM) disciplines. Goad and Chartwell searched university web pages and Twitter accounts, data bases of funding agencies, and repositories of the scientific literature to quantify changes over time in the use of DEI-related terminology (e.g., "advocacy", "ally", "diversity", "equity", "justice", "privilege", "race"). They claim that the use of these terms in university communications and the scientific literature has increased dramatically since 2010, which they argue is robust empirical evidence of "ideological intensification" in the academic and scientific enterprise. They further conclude that "the future of STEM, along with the rest of the academy, is almost certainly imperiled" if this intensification continues unchecked (@goad2022ideological, p. 47). Since its release in December 2022, the NAS report has been widely hailed and distributed by other prominent DEI critics, including Jordan Peterson, Colin Wright, and Christopher Rufo [@petersonJordanbpetersonRetweetNASorg2022;@rufoRealchrisrufoRetweetGoadMason2023; @goadIdeologicalIntensificationSTEM2023].  
+Goad and Chartwell made the laudable decision to post the code used to harvest and clean the data used in their report, along with the raw and processed data sets, "so that other analysts can scrutinize the methods and replicate them" [@nasorgNationalAssociationScholars2022, p. 48]. Here I show that their methods for gathering and processing online data, coupled with a failure to conduct rudimentary data validation procedures, resulted in "clean" data sets riddled with errors, including thousands of duplicated or irrelevant records. Notable examples include more than 5000 race-related tweets about sporting events, hundreds of grants to study species or genetic diversity, a dataset of NIH grants in which over 66% of the records were duplicates, and hundreds of DEI-related 'scientific articles' that were actually published in legal, humanities, or cultural studies journals (see _Supplement 1_).                
+Because Goad and Chartwell's visualizations and conclusions were based entirely on these data sets, the National Association of Scholars should immediately retract their report. Failure to do so would undermine both the institutional integrity and intellectual rigor that it espouses as guiding principles.

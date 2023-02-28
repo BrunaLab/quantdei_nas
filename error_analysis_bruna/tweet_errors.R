@@ -292,40 +292,62 @@ tweet_fail<-bind_rows(race_fail,
                        diversity_fail,
                        justice_fail,
                       advocacy_fail,
-                      ally_fail) %>% 
+                      ally_fail,
+                      privilege_fail) %>% 
   relocate(fail_category,.before=1)
 
-overall_fail_perc<-(nrow(tweet_fail)/nrow(t))*100
-overall_fail_perc
-race_fail_perc<-(nrow(race_fail)/nrow(race_tweets))*100
-race_fail_perc
-diversity_fail_perc<-(nrow(diversity_fail)/nrow(diversity_tweets))*100
-diversity_fail_perc
-justice_fail_perc<-(nrow(justice_fail)/nrow(justice_tweets))*100
-justice_fail_perc
-equity_fail_perc<-(nrow(equity_fail)/nrow(equity_tweets))*100
-equity_fail_perc
-advocacy_fail_perc<-(nrow(advocacy_fail)/nrow(advocacy_tweets))*100
-advocacy_fail_perc
-ally_fail_perc<-(nrow(ally_fail)/nrow(ally_tweets))*100
-ally_fail_perc
-privilege_fail_perc<-(nrow(privilege_fail)/nrow(privilege_tweets))*100
-privilege_fail_perc
+
+write_csv(tweet_fail,"./error_analysis_bruna/tweet_fail.csv")
+
+
+tweets_by_cat<-data.frame(
+  fail_category=c("advocacy",
+                  "ally",
+                  "diversity",
+                  "equity",
+                  "justice",
+                  "privilege",
+                  "race"),
+  original_tweets=c(nrow(advocacy_tweets),
+                   nrow(ally_tweets),
+                   nrow(diversity_tweets),
+                   nrow(equity_tweets),
+                   nrow(justice_tweets),
+                   nrow(privilege_tweets),
+                   nrow(race_tweets)
+                        )
+)
+
+twitter_fail_summary<-tweet_fail %>% 
+  group_by(fail_category) %>% 
+  summarize(irrelevant_tweets=n()) %>% 
+  left_join(tweets_by_cat) %>% 
+  mutate(min_perc_irrelevant=(irrelevant_tweets/original_tweets)*100) %>% 
+  arrange(min_perc_irrelevant)  %>% 
+  mutate(total_tweets=nrow(t))
+
+write_csv(twitter_fail_summary,"./error_analysis_bruna/twitter_fail_summary.csv")
 
 
 
 
-# plots -------------------------------------------------------------------
-priv_plot<-privilege_tweets %>% 
-  separate(created_at, c("year","month","remainder")) %>% 
-  select(-remainder) %>% 
-  group_by(month,year) %>% 
-  summarize(n=n()) %>% 
-  mutate(year=as.integer(year)) %>% 
-  mutate(date=paste(year,month,sep="-")) %>% 
-  filter(year>2015)
 
+twitter_sums<-data.frame(irrelevant_tweets=sum(twitter_fail_summary$irrelevant_tweets),
+                           original_tweets=sum(twitter_fail_summary$original_tweets))
+twitter_sums<-twitter_sums %>% mutate(min_perc_irrelevant=irrelevant_tweets/original_tweets*100)
 
-ggplot(data=priv_plot, aes(x=date, y=n, group=1)) +
-  geom_line()+
-  theme_classic()
+# 
+# # plots -------------------------------------------------------------------
+# priv_plot<-privilege_tweets %>% 
+#   separate(created_at, c("year","month","remainder")) %>% 
+#   select(-remainder) %>% 
+#   group_by(month,year) %>% 
+#   summarize(n=n()) %>% 
+#   mutate(year=as.integer(year)) %>% 
+#   mutate(date=paste(year,month,sep="-")) %>% 
+#   filter(year>2015)
+# 
+# 
+# ggplot(data=priv_plot, aes(x=date, y=n, group=1)) +
+#   geom_line()+
+#   theme_classic()

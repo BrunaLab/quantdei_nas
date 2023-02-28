@@ -182,12 +182,13 @@ nih <-nih %>% mutate_all(tolower)
 dupes_nih<-nih %>% 
   get_dupes(project_title,program_official_information, project_start_date)
 
+names(nih)
 
 nrow(dupes_nih)/nrow(nih)*100
 nih_deduped<-nih %>% 
   group_by(project_title, program_official_information) %>% 
   summarize(n=n()) %>% 
-  arrange(desc(n))
+  arrange(desc(n)) %>% 
   distinct(project_title)
 
 nih_perc_duplicated<-(1-(nrow(nih_deduped)/nrow(nih)))*100 %>% as_tibble() 
@@ -205,3 +206,5 @@ duplicated_records<-bind_rows(nih_perc_duplicated,nsf_perc_duplicated) %>%
   mutate(percent_duplicated_rows=round(percent_duplicated_rows,2))
 
 
+write_csv(diversity_nsf_fail,"./error_analysis_bruna/nsf_diversity_grants.csv")
+write_csv(duplicated_records,"./error_analysis_bruna/grant_dupes.csv")

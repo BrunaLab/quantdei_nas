@@ -1,0 +1,44 @@
+\begin{longtable}[l]{lccc}
+\caption{\label{tab:Table1}Irrelevant tweets attributed to seven different DEI terms and the total number of tweets for each term in the original dataset. Note that this percentage is a conservative estimate, as it is based on a preliminary review.}\\
+\toprule
+DEI Term & Irrelevant Tweets (N) & Total Tweets (N) & \% Irrelevant\\
+\midrule
+diversity & 174 & 31268 & 0.56\\
+equity & 270 & 16374 & 1.65\\
+ally & 377 & 6953 & 5.42\\
+advocacy & 512 & 5128 & 9.98\\
+justice & 2491 & 22090 & 11.28\\
+race & 5051 & 25167 & 20.07\\
+privilege & 1382 & 3498 & 39.51\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[l]{ll}
+\caption{\label{tab:Table2}Sample tweets incorrectly attributed to different DEI terms.}\\
+\toprule
+DEI Term & sample irrelevant tweet\\
+\midrule
+advocacy & a passionate physician and educator commited ot medical education pati\\
+advocacy & the basic trial advocacy class at the uarizonalaw school argued their\\
+advocacy & students in the basic trial advocacy class at the uarizonalaw had thei\\
+ally & allymahoney11 y grades can be given for students if the faculty member\\
+ally & allyrae12508 congratulations\\
+ally & allyrae12508 welcome to the sun devil family\\
+diversity & a new university of arizonaled study uses big data to assess why the d\\
+diversity & a new study coauthored by university of arizona researchers provides t\\
+diversity & new uarizona research finds that sexual reproduction and multicellular\\
+equity & judge rakoffs decision has the potential of really blowing up said bri\\
+equity & highly speculative prof renee jones talks to businessinsider about pri\\
+equity & rt hnbayld congrats alex mancebo jonesday boston office focuses his pr\\
+justice & arizonapbs will honor the legacy of supreme court justice sandra day o\\
+justice & asucrimjustice researchers have found that there is a higher likelihoo\\
+justice & two weeks before her first year at asu carson swisher changed her majo\\
+privilege & rt azathletics 90 years ago today beardown was born it is a privilege\\
+privilege & rt uapolicechief thank u asuatoday amp uaaa for this very special hono\\
+privilege & rt wendelldneal two of the greatest guys i have ever had the privilege\\
+race & join the beantowncats for the jeff coombs memorial virtual road race a\\
+race & ronald a wilson ua title ix director and a former presiding judge for\\
+race & join the beantowncats in the jeff coombs memorial road race on sept 9\\
+\bottomrule
+\end{longtable}

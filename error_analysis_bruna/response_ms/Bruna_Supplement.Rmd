@@ -1,0 +1,274 @@
+---
+title             : "Supplement to Bruna: Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars"
+shorttitle        : "Flawed data validation by the NAS"
+
+author: 
+  - name          : "Emilio M. Bruna"
+    affiliation   : "1,2"
+#    address       : "Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA"
+    email         : "embruna@ufl.edu"
+    # role:
+    #   - Methodology
+    #   - Data curation
+    #   - Investigation
+    #   - Funding acquisition
+    #   - Conceptualization
+    #   - Formal analysis
+    #   - Methodology
+    #   - Project administration
+    #   - Resources
+    #   - Software
+    #   - Supervision
+    #   - Validation
+    #   - Visualization
+    #   - Writing original draft
+
+affiliation:
+  - id            : "1"
+    institution   : "Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA"
+  - id            : "2"
+    institution   : "Center for Latin American Studies, University of Florida, PO Box 115530, Gainesville, FL 32611-5530, USA"
+
+authornote: All code and data used in this analysis are available at https://github.com/embruna/quantdei_nas. 
+
+# 
+# abstract: |
+#   Abstract of the paper.
+  
+  
+  
+keywords          : "Up,to,eight,keywords"
+wordcount         : "X"
+
+bibliography      : "NAS_response.bib"
+
+floatsintext      : no
+figurelist        : yes
+tablelist         : no
+footnotelist      : no
+numbersections    : no
+linenumbers       : yes
+mask              : no
+draft             : no
+# replace_ampersands: yes
+
+classoption       : "man, donotrepeattitle" # suppresses title on 1st page of MS
+output            : papaja::apa6_pdf
+mainfont: Times New Roman
+fontsize: 12pt
+csl: "science.csl"
+fig_caption: yes
+keep_tex: yes
+
+header-includes:
+  - \raggedbottom
+  - \usepackage{endfloat} #[nomarkers] excludes the {insert figure x around here] from main text. The others exclude the list of tables and figures. https://cs.brown.edu/about/system/managed/latex/doc/endfloat.pdf
+  - \usepackage{setspace}\doublespacing
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{tabu}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+
+---
+
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("NAS_response.bib")
+knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE)
+library(tidyverse)
+library(gridExtra)
+library(kableExtra)
+library(egg)
+library(magick)
+```
+
+```{r GlobalOptions, include=FALSE}
+options(knitr.duplicate.label = 'allow')
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+# knitr::opts_chunk$set(fig.pos = 'h')
+```
+
+
+# Data Review and Validation 
+The search for duplicated records and other validation procedures were carried out using code written in the R statistical programming language [@rcoreteamLanguageEnvironmentStatistical2020] with functions from the `tidyverse` [@wickhamWelcomeTidyverse2019] and `janitor` [@firkeJanitorSimpleTools2021] libraries. This code was then applied to three of Goad and Chartwell's `'clean'` data sets, all of which are located in subfolders of their Github repository's `'out'` folder  [@scholarsQuantitativeStudyDiversity2022]: 
+
+1. University Twitter accounts: `tweets_clean.csv`
+2. Research grants  
+    A. National Science Foundation (i.e., NSF):  `nsf_all_grants_summary_data.csv`  
+    B. National Institutes of Health (i.e., NIH): `nih_parsed_all.fst`  
+3. Scientific publications in Google Scholar: `google_scholar.fst` 
+
+The code used to validate data and the resulting output are available at [@BrunaLabQuantdeiNas]; below I provide summaries and representative examples of the errors revealed by the validation procedure. It is important to emphasize that any error estimates presented are conservative, as the validations carried out were merely a "first pass" using simple search strings. More robust validation efforts will almost certainly identify additional errors. 
+
+## _University Twitter accounts_
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+tweet_fail<-read_csv("./error_analysis_bruna/tweet_fail.csv",col_types = cols())
+twitter_fail_summary<-read_csv("./error_analysis_bruna/twitter_fail_summary.csv",col_types = cols())
+
+total_tweets<-twitter_fail_summary %>% 
+  select(total_tweets) %>% 
+  slice(1)
+```
+
+Goad and Chartwell searched 895 university accounts for 21 terms they define as DEI-related (e.g., "advocacy", "ally", "diversity", "equity", "justice", "privilege", "race"). This resulted in `r total_tweets` tweets, which they then used to graph the use of the individual terms over time. Many of the terms for which they searched, however, also have uses and meanings beyond DEI. For instance, "race" could refer to competitions or athletic events, "ally" is a common nickname for "Allison", and introductions are often prefaced by the phrase "it is my privilege to...". Goad and Chartwell clearly failed to filter their dataset for tweets using these terms in non-DEI contexts; based on my preliminary review at least `r round(((sum(twitter_fail_summary$irrelevant_tweets)/total_tweets)*100),2)`% of the tweets in their data set are not actually DEI-related, with the percentage of irrelevant tweets for a given term ranging from `r round(min(twitter_fail_summary$min_perc_irrelevant),2)` - `r round(max(twitter_fail_summary$min_perc_irrelevant),2)`%.
+
+## _NIH and NSF grants_ 
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+nsf_div_grants<-read_csv("./error_analysis_bruna/nsf_diversity_grants.csv",col_types = cols())
+grant_dupes<-read_csv("./error_analysis_bruna/grant_dupes.csv",col_types = cols())
+
+
+number_nsfdiv<-nrow(nsf_div_grants)
+
+perc_duped_nsf<-grant_dupes %>% filter(agency=="nsf") %>% select(percent_duplicated_rows) 
+perc_duped_nih<-grant_dupes %>% filter(agency=="nih") %>% select(percent_duplicated_rows) 
+```
+
+Goad and Chartwell also failed to screen for alternative uses of their focal terms when reviewing the grants awarded by NSF and NIH (e.g., N = `r number_nsfdiv` of the NSF grants they identify using the term "diversity" in a DEI-context are actually investigating genetic, phylogenetic, or species diversity. However, a more serious issue is that that they vastly inflated their sample sizes. When researchers at multiple institutions are involved in a project, they submit a single grant proposal. If selected for funding, the NSF and NIH will allocate each institution their portion of the grant funds directly. By failing to consolidate the awards for each of the co-PIs collaborating on the same grant proposal, Goad and Chartwell overstimated the number of NSF and NIH grants by at least `r perc_duped_nsf`% and `r perc_duped_nih`%, respectively.
+
+## _Scientific publications in Google Scholar_
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+gs_dupes<-read_csv("./error_analysis_bruna/gs_dupes.csv",col_types = cols())
+gs_sources<-read_csv("./error_analysis_bruna/gs_sources.csv",col_types = cols())
+gs_dupes_summary<-read_csv("./error_analysis_bruna/gs_dupes_summary.csv",col_types = cols())
+
+number_gs_dupes<-nrow(gs_dupes)
+
+```
+
+Finally, Goad and Chartwell sought to identify any DEI-related publications in the scientific literature. To do so they searched a number of repositories, including Google Scholar, for DEI-related articles in science, technology, engineering, and mathematics (STEM) journals by using search strings including a STEM-term and one of their DEI-related terms (e.g., "biology diversity"). Here again they failed to search their results for duplicate or irrelevant records prior to graphing their results - over `r number_gs_dupes` of the records in their data set were duplicates (`r round(number_gs_dupes/(gs_dupes_summary$total_gs)*100,2)`%), and at least XXXX of the articles they considered DEI-related were incorrectly included. Moreover, their data set of 'DEI-related articles in STEM journals' included at least N = `r sum(gs_sources$n)` articles in humanities, cultural studies, and law journals. A partial list of these journals can be found in Table SX.     
+
+\newpage
+
+
+
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::
+
+
+
+```{r FigS1, echo=FALSE, message = FALSE, warning=FALSE, fig.align='center', fig.cap="Percentage of irrelevant tweets atrtibuted to seven different DEI search terms. Note that this percentage is a conservative estimate, as it is based on a preliminary review.", fig.fullwidth=TRUE,fig.height = 5,fig.width=5}
+twitter_plot<-ggplot(data=twitter_fail_summary, aes(x=reorder(fail_category,min_perc_irrelevant),y=min_perc_irrelevant)) +
+  geom_bar(stat="identity") +
+  labs(x="DEI-related Terms",
+       y="Irrelevant Tweets (%)",
+       title=" ")+
+  scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50), expand = c(0, 0)) +
+  theme_classic()+
+  theme(
+    # plot.title = element_text(face="bold", size=20,family = "Arial", colour = "black"),
+        # Sets title size, style, location
+        # legend.position=c(0.5,0.95),
+        axis.line.y = element_line(color="black", size = 0.5, lineend="square"),
+        axis.line.x = element_line(color="black", size = 0.5, lineend="square"),
+        axis.title.x=element_text(colour="black", size = 14, vjust=-1,hjust=0.5),           #S ets x
+        axis.title.y=element_text(colour="black", size = 14, vjust=1.5,hjust=0.5),            #S ets y
+        axis.text.x=element_text(colour="black", size = 10, angle = 0, vjust =0, hjust=0.5),
+        axis.text.y=element_text(colour="black", size = 10, angle = 0, vjust =0, hjust=0),                          # Sets size and style of labels on axes
+        # legend.title = element_blank(),                                             # Removes the Legend title
+        # legend.key = element_blank(),                                              #R emoves the boxes around legend colors
+        # legend.text = element_text(face="italic", color="black", size=12),
+        # legend.position = "top",
+        # legend.direction = 'horizontal',
+        # legend.key = element_rect(colour = "black"),                              #s ets size and style of labels on axes
+        # plot.margin = unit(c(1,2,1,1), "cm")
+        plot.background = element_rect(fill = "white"),
+        panel.background = element_rect(fill = "white")
+  )
+twitter_plot
+```
+
+
+
+
+```{r Table1, echo=FALSE,message = FALSE,warning=FALSE}
+
+Table1<-twitter_fail_summary %>% 
+  mutate(min_perc_irrelevant=round(min_perc_irrelevant,2)) %>% 
+  select(-total_tweets)
+
+names(Table1)<-c("DEI Term","Irrelevant Tweets (N)","Total Tweets (N)","% Irrelevant")
+
+Table1<-knitr::kable(Table1, 
+      digits = 2,
+      align="lccc",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      longtable=T,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "Irrelevant tweets attributed to seven different DEI terms and the total number of tweets for each term in the original dataset. Note that this percentage is a conservative estimate, as it is based on a preliminary review.") %>%
+     kable_styling(bootstrap_options = c("hover"),
+                 full_width = F,
+                 latex_options="scale_down",
+                 font_size = 12,
+                position = "left")  
+
+
+Table1
+```
+
+
+
+
+
+
+<!-- \blandscape -->
+<!-- \newpage -->
+```{r Table2, echo=FALSE,message = FALSE,warning=FALSE}
+
+Table2<-tweet_fail %>% 
+  group_by(fail_category) %>% 
+  slice(1:3) %>% 
+  rename("tweet"="text") %>% 
+  select(fail_category,tweet) %>% 
+  mutate(tweet=gsub("[[:punct:]]", "", tweet))  %>% 
+ mutate(tweet=str_sub(tweet, 1, 70))
+
+# %>% 
+#   mutate(text=gsub("\\\\", " ", tweet)
+#                    
+# Table1<-Tables[2]
+# Table1<-as.data.frame(Table1)
+# Table1<-arrange(Table1,desc(`APC..US..`))
+
+
+names(Table2)<-c("DEI Term","sample irrelevant tweet")
+
+Table2<-knitr::kable(Table2, 
+      digits = 2,
+      align="ll",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      longtable=T,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "Sample tweets incorrectly attributed to different DEI terms.") %>%
+  kable_styling(bootstrap_options = c("hover"),
+                full_width = F,
+                latex_options="scale_down",
+                font_size = 12,
+               position = "left") 
+
+# %>%
+#   footnote(number = c("OA Mirror title: Biochimie Open", "OA Mirror title: Micro and Nano Engineering")) %>% add_header_above(c(" " = 1, "Subscription Journal" = 2, "Mirror Journal" = 1))
+# tmp<-str_replace(tmp, "Super1", "$^{1}$")
+# tmp<-str_replace(tmp, "Super2", "$^{2}$")
+# knitr::asis_output(tmp)
+Table2
+```
+
+
+<!-- \elandscape -->
