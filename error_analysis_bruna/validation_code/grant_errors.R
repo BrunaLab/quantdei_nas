@@ -110,20 +110,49 @@ diversity_nsf_fail <- diversity_nsf %>%
         str_detect(title, "plant")
     ) == TRUE
   ) %>%
+  filter(str_detect(title, "1619 project") == FALSE) %>%
+  filter(str_detect(title, "advocacy") == FALSE) %>%
+  filter(str_detect(title, "ally") == FALSE) %>%
+  filter(str_detect(title, "anti-racism") == FALSE) %>%
+  filter(str_detect(title, "antiracism") == FALSE) %>%
+  filter(str_detect(title, "bias") == FALSE) %>%
+  filter(str_detect(title, "black lives") == FALSE) %>%
+  filter(str_detect(title, "black lives matter") == FALSE) %>%
+  filter(str_detect(title, "blm") == FALSE) %>%
+  filter(str_detect(title, "civil right") == FALSE) %>%
+  filter(str_detect(title, "critical race theory") == FALSE) %>%
+  filter(str_detect(title, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(title, "discrimination") == FALSE) %>%
+  filter(str_detect(title, "enhancing diversity") == FALSE) %>%
+  # filter(str_detect(title, "diverse") == FALSE) %>%
+  filter(str_detect(title, "equity") == FALSE) %>%
+  filter(str_detect(title, "equality") == FALSE) %>%
   filter(str_detect(title, "gender") == FALSE) %>%
+  filter(str_detect(title, "george floyd") == FALSE) %>%
+  filter(str_detect(title, "inequality") == FALSE) %>%
+  filter(str_detect(title, "implicit bias") == FALSE) %>%
+  filter(str_detect(title, "indigenous") == FALSE) %>%
   filter(str_detect(title, "inclusion") == FALSE) %>%
+  filter(str_detect(title, "intersectional") == FALSE) %>%
+  filter(str_detect(title, "justice") == FALSE) %>%
+  filter(str_detect(title, "kendi") == FALSE) %>%
+  filter(str_detect(title, "microaggression") == FALSE) %>%
+  filter(str_detect(title, "multicultural") == FALSE) %>%
+  filter(str_detect(title, "oppression") == FALSE) %>%
+  filter(str_detect(title, "privilege") == FALSE) %>%
+  filter(str_detect(title, "race") == FALSE) %>%
   filter(str_detect(title, "racism") == FALSE) %>%
   filter(str_detect(title, "racial") == FALSE) %>%
-  filter(str_detect(title, "civil right") == FALSE) %>%
-  filter(str_detect(title, "career") == FALSE) %>%
+  filter(str_detect(title, "racist") == FALSE) %>%
   filter(str_detect(title, "reform") == FALSE) %>%
-  filter(str_detect(title, "equality") == FALSE) %>%
-  filter(str_detect(title, "politi") == FALSE) %>%
-  filter(str_detect(title, "equity") == FALSE) %>%
-  filter(str_detect(title, "black lives") == FALSE) %>%
-  filter(str_detect(title, "social change") == FALSE) %>%
   filter(str_detect(title, "social justice") == FALSE) %>%
-  filter(str_detect(title, "oppression") == FALSE)
+  filter(str_detect(title, "social change") == FALSE) %>%
+  filter(str_detect(title, "systemic racism") == FALSE) %>%
+  filter(str_detect(title, "transgender") == FALSE) %>%
+  filter(str_detect(title, "trans") == FALSE) %>%
+  filter(str_detect(title, "underrepresented") == FALSE) %>%
+  filter(str_detect(title, "white fragility") == FALSE) %>%
+  filter(str_detect(title, "white supremacy") == FALSE) 
 
 # Note this doesnt include any of the DIGG, post, or predoc
 

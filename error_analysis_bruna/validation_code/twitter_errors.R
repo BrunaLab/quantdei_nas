@@ -22,23 +22,23 @@ names(t)
 
 
 t <- t %>%
-  separate(file, c("one", "account", "category"), "--",remove=FALSE) %>% # split source to isolate kw
+  separate(file, c("one", "account", "category"), "--", remove = FALSE) %>% # split source to isolate kw
   select(-one) %>% # delete unused portions
-  relocate(category,account, .before = 1) %>%
+  relocate(category, account, .before = 1) %>%
   mutate(category = str_sub(category, 1, -5)) %>% # remove .Rds
-  mutate_all(tolower) 
+  mutate_all(tolower)
 
 # The duplicate tweets are mostly retweets or repeat of theme tweets
 # (eg, black history month) shared several times. Will not treat these
-# as true duplicates, as argument could be made that each tweet is a unique 
+# as true duplicates, as argument could be made that each tweet is a unique
 # repeat of DEI message
 
-# t_deduped <- t %>% 
+# t_deduped <- t %>%
 #   distinct(text,account,category,.keep_all = TRUE)
-# 
-# dupe_tweets_summary <-t %>% group_by(text,account,category) %>% 
-#   summarize(n=n()) %>% 
-#   arrange(desc(n)) %>% 
+#
+# dupe_tweets_summary <-t %>% group_by(text,account,category) %>%
+#   summarize(n=n()) %>%
+#   arrange(desc(n)) %>%
 #   filter(n>1)
 # unique(t$category)
 
@@ -98,18 +98,50 @@ race_fail <- race_tweets %>%
 # DEI words. Other ones also have this, but it is piped for efficiency
 
 race_fail <- race_fail %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
-  filter(str_detect(text, "inclusion") == FALSE) %>%
-  filter(str_detect(text, "racism") == FALSE) %>%
-  filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
-  filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  filter(str_detect(text, "advocacy") == FALSE) %>%
+  filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  # filter(str_detect(text, "bias") == FALSE) %>%
   filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  filter(str_detect(text, "diversity") == FALSE) %>%
+  filter(str_detect(text, "diverse") == FALSE) %>%
+  filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
+  # filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
+  filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "justice") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "privilege") == FALSE) %>%
+  # filter(str_detect(text, "race") == FALSE) %>%
+  filter(str_detect(text, "racism") == FALSE) %>%
+  # filter(str_detect(text, "racial") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
+  filter(str_detect(text, "reform") == FALSE) %>%
+  filter(str_detect(text, "social justice") == FALSE) %>%
   filter(str_detect(text, "social change") == FALSE) %>%
-  filter(str_detect(text, "social justice") == FALSE)
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  # filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
+
 
 # "justice" errors --------------------------------------------------------
 
@@ -125,18 +157,48 @@ justice_fail <- justice_tweets %>%
         str_detect(text, "criminal justice")
     ) == TRUE
   ) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
-  filter(str_detect(text, "inclusion") == FALSE) %>%
-  filter(str_detect(text, "racism") == FALSE) %>%
-  filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
-  filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  filter(str_detect(text, "advocacy") == FALSE) %>%
+  filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  # filter(str_detect(text, "bias") == FALSE) %>%
   filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  filter(str_detect(text, "diversity") == FALSE) %>%
+  filter(str_detect(text, "diverse") == FALSE) %>%
+  filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
+  # filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
+  filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "privilege") == FALSE) %>%
+  # filter(str_detect(text, "race") == FALSE) %>%
+  filter(str_detect(text, "racism") == FALSE) %>%
+  # filter(str_detect(text, "racial") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
+  filter(str_detect(text, "reform") == FALSE) %>%
+  filter(str_detect(text, "social justice") == FALSE) %>%
   filter(str_detect(text, "social change") == FALSE) %>%
-  filter(str_detect(text, "social justice") == FALSE)
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  # filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
 
 
 
@@ -173,18 +235,49 @@ diversity_fail <- diversity_tweets %>%
         str_detect(text, "plant")
     ) == TRUE
   ) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  filter(str_detect(text, "advocacy") == FALSE) %>%
+  filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  # filter(str_detect(text, "bias") == FALSE) %>%
+  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  # filter(str_detect(text, "diversity") == FALSE) %>%
+  # filter(str_detect(text, "diverse") == FALSE) %>%
+  filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
   filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "justice") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "privilege") == FALSE) %>%
+  filter(str_detect(text, "race") == FALSE) %>%
   filter(str_detect(text, "racism") == FALSE) %>%
   filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
   filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "black lives") == FALSE) %>%
-  filter(str_detect(text, "social change") == FALSE) %>%
   filter(str_detect(text, "social justice") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE)
+  filter(str_detect(text, "social change") == FALSE) %>%
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  # filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
 
 
 
@@ -203,19 +296,49 @@ equity_fail <- equity_tweets %>%
         str_detect(text, "firm")
     ) == TRUE
   ) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  filter(str_detect(text, "advocacy") == FALSE) %>%
+  filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  filter(str_detect(text, "bias") == FALSE) %>%
+  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  filter(str_detect(text, "diversity") == FALSE) %>%
+  filter(str_detect(text, "diverse") == FALSE) %>%
+  # filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
   filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "justice") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "privilege") == FALSE) %>%
+  filter(str_detect(text, "race") == FALSE) %>%
   filter(str_detect(text, "racism") == FALSE) %>%
   filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
   filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE) %>%
-  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "social justice") == FALSE) %>%
   filter(str_detect(text, "social change") == FALSE) %>%
-  filter(str_detect(text, "social justice") == FALSE)
-
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
 
 
 # advocacy errors ---------------------------------------------------------
@@ -238,18 +361,49 @@ advocacy_fail <- advocacy_tweets %>%
         str_detect(text, "legislature")
     ) == TRUE
   ) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  # filter(str_detect(text, "advocacy") == FALSE) %>%
+  filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  filter(str_detect(text, "bias") == FALSE) %>%
+  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  filter(str_detect(text, "diversity") == FALSE) %>%
+  filter(str_detect(text, "diverse") == FALSE) %>%
+  filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
   filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "justice") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "privilege") == FALSE) %>%
+  filter(str_detect(text, "race") == FALSE) %>%
   filter(str_detect(text, "racism") == FALSE) %>%
   filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
   filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE) %>%
-  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "social justice") == FALSE) %>%
   filter(str_detect(text, "social change") == FALSE) %>%
-  filter(str_detect(text, "social justice") == FALSE)
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
 
 
 
@@ -275,17 +429,49 @@ ally_fail <- ally_tweets %>%
         str_detect(text, "single")
     ) == TRUE
   ) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  filter(str_detect(text, "advocacy") == FALSE) %>%
+  # filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  filter(str_detect(text, "bias") == FALSE) %>%
+  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  filter(str_detect(text, "diversity") == FALSE) %>%
+  filter(str_detect(text, "diverse") == FALSE) %>%
+  filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
   filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "justice") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  filter(str_detect(text, "privilege") == FALSE) %>%
+  filter(str_detect(text, "race") == FALSE) %>%
   filter(str_detect(text, "racism") == FALSE) %>%
   filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
   filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE) %>%
-  filter(str_detect(text, "social") == FALSE)
-
+  filter(str_detect(text, "social justice") == FALSE) %>%
+  filter(str_detect(text, "social change") == FALSE) %>%
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
 # privilege errors -------------------------------------------------------------
 
 
@@ -306,20 +492,49 @@ privilege_fail <- privilege_tweets %>%
         str_detect(text, "the privilege of")
     ) == TRUE
   ) %>%
+  filter(str_detect(text, "1619 project") == FALSE) %>%
+  filter(str_detect(text, "advocacy") == FALSE) %>%
+  filter(str_detect(text, "ally") == FALSE) %>%
+  filter(str_detect(text, "anti-racism") == FALSE) %>%
+  filter(str_detect(text, "antiracism") == FALSE) %>%
+  filter(str_detect(text, "bias") == FALSE) %>%
+  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "black lives matter") == FALSE) %>%
+  filter(str_detect(text, "blm") == FALSE) %>%
+  filter(str_detect(text, "civil right") == FALSE) %>%
+  filter(str_detect(text, "critical race theory") == FALSE) %>%
+  filter(str_detect(text, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(text, "discrimination") == FALSE) %>%
+  filter(str_detect(text, "diversity") == FALSE) %>%
+  filter(str_detect(text, "diverse") == FALSE) %>%
+  filter(str_detect(text, "equity") == FALSE) %>%
+  filter(str_detect(text, "equality") == FALSE) %>%
   filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "george floyd") == FALSE) %>%
+  filter(str_detect(text, "inequality") == FALSE) %>%
+  filter(str_detect(text, "implicit bias") == FALSE) %>%
+  filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "justice") == FALSE) %>%
+  filter(str_detect(text, "kendi") == FALSE) %>%
+  filter(str_detect(text, "microaggression") == FALSE) %>%
+  filter(str_detect(text, "multicultural") == FALSE) %>%
+  filter(str_detect(text, "oppression") == FALSE) %>%
+  # filter(str_detect(text, "privilege") == FALSE) %>%
+  filter(str_detect(text, "race") == FALSE) %>%
   filter(str_detect(text, "racism") == FALSE) %>%
   filter(str_detect(text, "racial") == FALSE) %>%
-  filter(str_detect(text, "ally") == FALSE) %>%
-  filter(str_detect(text, "your privilege") == FALSE) %>%
-  filter(str_detect(text, "civil right") == FALSE) %>%
-  filter(str_detect(text, "gender") == FALSE) %>%
+  filter(str_detect(text, "racist") == FALSE) %>%
   filter(str_detect(text, "reform") == FALSE) %>%
-  filter(str_detect(text, "equality") == FALSE) %>%
-  filter(str_detect(text, "oppression") == FALSE) %>%
-  filter(str_detect(text, "black lives") == FALSE) %>%
+  filter(str_detect(text, "social justice") == FALSE) %>%
   filter(str_detect(text, "social change") == FALSE) %>%
-  filter(str_detect(text, "social justice") == FALSE)
+  filter(str_detect(text, "systemic racism") == FALSE) %>%
+  filter(str_detect(text, "transgender") == FALSE) %>%
+  filter(str_detect(text, "trans") == FALSE) %>%
+  filter(str_detect(text, "underrepresented") == FALSE) %>%
+  filter(str_detect(text, "white fragility") == FALSE) %>%
+  filter(str_detect(text, "white supremacy") == FALSE)
 
 
 
@@ -364,7 +579,7 @@ tweet_fails_by_cat <- tweet_fail %>%
 twitter_fail_summary <- tweet_fails_by_cat %>%
   left_join(original_tweets_by_cat) %>%
   mutate(perc_fail = (fail_tweets / tweets_in_cat) * 100) %>%
-  mutate(total_tweets_reviewed = sum(tweets_in_cat)) %>% 
-  mutate(total_tweets_clean=nrow(t))
+  mutate(total_tweets_reviewed = sum(tweets_in_cat)) %>%
+  mutate(total_tweets_clean = nrow(t))
 
 write_csv(twitter_fail_summary, "./error_analysis_bruna/validation_output/twitter_notdei_summary.csv")
