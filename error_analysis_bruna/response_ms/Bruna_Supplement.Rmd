@@ -91,38 +91,50 @@ knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
 # knitr::opts_chunk$set(fig.pos = 'h')
 ```
 
+# Data Review and Validation
 
-# Data Review and Validation 
-The search for duplicated records and other validation procedures were carried out using code written in the R statistical programming language [@rcoreteamLanguageEnvironmentStatistical2020] with functions from the `tidyverse` [@wickhamWelcomeTidyverse2019] and `janitor` [@firkeJanitorSimpleTools2021] libraries. This code was then applied to three of Goad and Chartwell's `'clean'` data sets, all of which are located in subfolders of their Github repository's `'out'` folder  [@scholarsQuantitativeStudyDiversity2022]: 
+Below I present a brief overview of the methods used to review the contents of four of `'clean'` data sets used by Goad and Chartwell to visualize trends in DEI-language use: 
 
 1. University Twitter accounts: `tweets_clean.csv`
-2. Research grants  
-    A. National Science Foundation (i.e., NSF):  `nsf_all_grants_summary_data.csv`  
-    B. National Institutes of Health (i.e., NIH): `nih_parsed_all.fst`  
-3. Scientific publications in Google Scholar: `google_scholar.fst` 
+1. Grants awarded by the National Science Foundation (i.e., NSF):  `nsf_all_grants_summary_data.csv`  
+1. Grants awarded by the National Institutes of Health (i.e., NIH): `nih_parsed_all.fst`  
+1. Scientific publications indexed in Google Scholar: `google_scholar.fst` 
 
-The code used to validate data and the resulting output are available at [@BrunaLabQuantdeiNas]; below I provide summaries and representative examples of the errors revealed by the validation procedure. It is important to emphasize that any error estimates presented are conservative, as the validations carried out were merely a "first pass" using simple search strings. More robust validation efforts will almost certainly identify additional errors. 
+These data sets can all be found in the `'out'` folder of the Github repository hosting the code used for the NAS report [@scholarsQuantitativeStudyDiversity2022].  
+To review their datasets I used code written in the R statistical programming language [@rcoreteamLanguageEnvironmentStatistical2020] with functions from the `tidyverse` [@wickhamWelcomeTidyverse2019] and `janitor` [@firkeJanitorSimpleTools2021] libraries for filtering, de-duplicating, and summarizing data frames. This code and the resulting output are available at [@BrunaLabQuantdeiNas]. Below I provide summaries and representative examples of the errors revealed by the validation procedures; it is important to emphasize that any error estimates presented are conservative, as this was merely a "first pass" using simple methods. More robust validation efforts will almost certainly identify additional errors. 
 
 ## _University Twitter accounts_
 
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-tweet_fail<-read_csv("./error_analysis_bruna/tweet_fail.csv",col_types = cols())
-twitter_fail_summary<-read_csv("./error_analysis_bruna/twitter_fail_summary.csv",col_types = cols())
+twitter_notdei<-read_csv("./error_analysis_bruna/validation_output/twitter_notdei.csv",col_types = cols())
+twitter_notdei_summary<-read_csv("./error_analysis_bruna/validation_output/twitter_notdei_summary.csv",col_types = cols())
 
-total_tweets<-twitter_fail_summary %>% 
-  select(total_tweets) %>% 
+total_tweets_reviewed<-twitter_notdei_summary %>% 
+  select(total_tweets_reviewed) %>% 
   slice(1)
+
+total_tweets_clean<-twitter_notdei_summary %>% 
+  select(total_tweets_clean) %>% 
+  slice(1)
+
+total_tweets_fail<-twitter_notdei_summary %>% 
+  summarize(sum(fail_tweets))
+
+min_perc<-round(min(twitter_notdei_summary$perc_fail),2)
+max_perc<-round(max(twitter_notdei_summary$perc_fail),2)
 ```
 
-Goad and Chartwell searched 895 university accounts for 21 terms they define as DEI-related (e.g., "advocacy", "ally", "diversity", "equity", "justice", "privilege", "race"). This resulted in `r total_tweets` tweets, which they then used to graph the use of the individual terms over time. Many of the terms for which they searched, however, also have uses and meanings beyond DEI. For instance, "race" could refer to competitions or athletic events, "ally" is a common nickname for "Allison", and introductions are often prefaced by the phrase "it is my privilege to...". Goad and Chartwell clearly failed to filter their dataset for tweets using these terms in non-DEI contexts; based on my preliminary review at least `r round(((sum(twitter_fail_summary$irrelevant_tweets)/total_tweets)*100),2)`% of the tweets in their data set are not actually DEI-related, with the percentage of irrelevant tweets for a given term ranging from `r round(min(twitter_fail_summary$min_perc_irrelevant),2)` - `r round(max(twitter_fail_summary$min_perc_irrelevant),2)`%.
+Goad and Chartwell searched 895 university accounts for 21 terms they define as DEI-related. They used the resulting dataset of N = `r total_tweets_clean` tweets (`'tweets_clean.csv'`) to graph the use of the DEI-terms over time. Many of the terms for which they searched, however, have uses and meanings beyond DEI. For instance, "race" could refer to competitions or athletic events, "ally" is a common nickname for "Allison", and introductions are often prefaced by the phrase "it is my privilege to...".   
+I reviewed Goad and Chartwell's twitter dataset for tweets that might be using seven of their DEI-related search terms in a non-DEI context. These terms were: "advocacy", "ally", "diversity", "equity", "justice", "privilege", and "race". I first filtered `'tweets_clean.csv'` for all tweets they assigned to a terms (e.g., "race"), then searched this subset of tweets for strings related to non-DEI uses of that term (e.g., "5K", "nascar", "sailing"). To ensure that the resulting tweets were not related to DEI, I eliminated any that included the other  DEI-terms for which they searched (e.g., "racism", "equality", "gender", "social justice)". I then reviewed the final list of tweets for each term manually. Note that this method provides a conservative estimate of non-DEI tweets attributed by Goad and Chartwell to each term, as it will only capture tweets with the non-DEI search strings I included.  The complete list of filtering strings for each of the 7 DEI-terms I reviewed is in `'twitter_errors.R'`; the complete collection of non-DEI tweets is in `'twitter_notdei.csv'`.   
+The seven search terms reviewed comprise `r round(total_tweets_reviewed/total_tweets_clean*100,2)`% of Goad and Chartwell's twitter dataset (N = `r total_tweets_reviewed` tweets). Based on the  conservative validation method described above, at least `r round(((total_tweets_fail/total_tweets_reviewed)*100),2)`% of these are not DEI-related, with the percentage of irrelevant tweets for a given term ranging from `r min_perc` - `r max_perc`%. If there were no additional errors in these or the remaining 14 terms, the overall error rate would be `r round(((total_tweets_fail/total_tweets_clean)*100),2)`%.
 
 ## _NIH and NSF grants_ 
 
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-nsf_div_grants<-read_csv("./error_analysis_bruna/nsf_diversity_grants.csv",col_types = cols())
-grant_dupes<-read_csv("./error_analysis_bruna/grant_dupes.csv",col_types = cols())
+nsf_div_grants<-read_csv("./error_analysis_bruna/validation_output/grants_nsf_diversity.csv",col_types = cols())
+grant_dupes<-read_csv("./error_analysis_bruna/validation_output/grants_dupes.csv",col_types = cols())
 
 
 number_nsfdiv<-nrow(nsf_div_grants)
@@ -131,15 +143,18 @@ perc_duped_nsf<-grant_dupes %>% filter(agency=="nsf") %>% select(percent_duplica
 perc_duped_nih<-grant_dupes %>% filter(agency=="nih") %>% select(percent_duplicated_rows) 
 ```
 
-Goad and Chartwell also failed to screen for alternative uses of their focal terms when reviewing the grants awarded by NSF and NIH (e.g., N = `r number_nsfdiv` of the NSF grants they identify using the term "diversity" in a DEI-context are actually investigating genetic, phylogenetic, or species diversity. However, a more serious issue is that that they vastly inflated their sample sizes. When researchers at multiple institutions are involved in a project, they submit a single grant proposal. If selected for funding, the NSF and NIH will allocate each institution their portion of the grant funds directly. By failing to consolidate the awards for each of the co-PIs collaborating on the same grant proposal, Goad and Chartwell overstimated the number of NSF and NIH grants by at least `r perc_duped_nsf`% and `r perc_duped_nih`%, respectively.
+Goad and Chartwell also failed to screen for alternative uses of their focal terms when reviewing the grants awarded by NSF and NIH. For example, N = `r number_nsfdiv` of the NSF grants they identify as being DEI-focused when searching with the term "diversity" are actually grants for ecological or evolutionary research on genetic, phylogenetic, or species diversity (see `'grants_nsf_diversity.csv'`). That aside, they also inflated their estimate for the total number of DEI-grants awarded because they failed to account for how NSF and NIH transfer funds to grant collaborators. A single proposal funded by these agencies will often be represented in the award databases by multiple "award" records because the researchers based at different institutions will be allocated their respective portions of the grant as separate awards. While calculating the total support by NSF and NIH of DEI-related activities requires tabulating the amount of individual awards, failing to consolidate the awards related to the same project, they inflated the total number of NSF and NIH grants by `r perc_duped_nsf`% and `r perc_duped_nih`%, respectively. 
+ 
+
+These duplicatons inflated the number of NSF and NIH grants by at least `r perc_duped_nsf`% and `r perc_duped_nih`%, respectively.
 
 ## _Scientific publications in Google Scholar_
 
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-gs_dupes<-read_csv("./error_analysis_bruna/gs_dupes.csv",col_types = cols())
-gs_sources<-read_csv("./error_analysis_bruna/gs_sources.csv",col_types = cols())
-gs_dupes_summary<-read_csv("./error_analysis_bruna/gs_dupes_summary.csv",col_types = cols())
+gs_dupes<-read_csv("./error_analysis_bruna/validation_output/gs_dupes.csv",col_types = cols())
+gs_sources<-read_csv("./error_analysis_bruna/validation_output/gs_sources_all_summary.csv",col_types = cols())
+gs_dupes_summary<-read_csv("./error_analysis_bruna/validation_output/gs_dupes_summary.csv",col_types = cols())
 
 number_gs_dupes<-nrow(gs_dupes)
 
@@ -160,7 +175,7 @@ Finally, Goad and Chartwell sought to identify any DEI-related publications in t
 
 
 ```{r FigS1, echo=FALSE, message = FALSE, warning=FALSE, fig.align='center', fig.cap="Percentage of irrelevant tweets atrtibuted to seven different DEI search terms. Note that this percentage is a conservative estimate, as it is based on a preliminary review.", fig.fullwidth=TRUE,fig.height = 5,fig.width=5}
-twitter_plot<-ggplot(data=twitter_fail_summary, aes(x=reorder(fail_category,min_perc_irrelevant),y=min_perc_irrelevant)) +
+twitter_plot<-ggplot(data=twitter_notdei_summary, aes(x=reorder(category,perc_fail),y=perc_fail)) +
   geom_bar(stat="identity") +
   labs(x="DEI-related Terms",
        y="Irrelevant Tweets (%)",
@@ -195,9 +210,9 @@ twitter_plot
 
 ```{r Table1, echo=FALSE,message = FALSE,warning=FALSE}
 
-Table1<-twitter_fail_summary %>% 
-  mutate(min_perc_irrelevant=round(min_perc_irrelevant,2)) %>% 
-  select(-total_tweets)
+Table1<-twitter_notdei_summary %>% 
+  mutate(perc_fail=round(perc_fail,2)) %>% 
+  select(-total_tweets_reviewed,-total_tweets_clean)
 
 names(Table1)<-c("DEI Term","Irrelevant Tweets (N)","Total Tweets (N)","% Irrelevant")
 
@@ -229,11 +244,11 @@ Table1
 <!-- \newpage -->
 ```{r Table2, echo=FALSE,message = FALSE,warning=FALSE}
 
-Table2<-tweet_fail %>% 
-  group_by(fail_category) %>% 
+Table2<-twitter_notdei %>% 
+  group_by(category) %>% 
   slice(1:3) %>% 
   rename("tweet"="text") %>% 
-  select(fail_category,tweet) %>% 
+  select(category,tweet) %>% 
   mutate(tweet=gsub("[[:punct:]]", "", tweet))  %>% 
  mutate(tweet=str_sub(tweet, 1, 70))
 

@@ -21,7 +21,7 @@ author:
     #   - Supervision
     #   - Validation
     #   - Visualization
-    #   - Writing ??? original draft
+    #   - Writing of the original draft
 
 affiliation:
   - id            : "1"
@@ -31,9 +31,9 @@ affiliation:
 
 authornote:  |
 
-  Address for correspondence: Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA (embruna@ufl.edu)
+  Address for correspondence: University of Florida, WEC, PO Box 110430, Gainesville, FL 32611-0430, USA (embruna@ufl.edu)
 
-  All code and data used in this analysis are available at https://github.com/embruna/quantdei_nas. 
+  The code and data used in this analysis are available for download and improvement at https://github.com/embruna/quantdei_nas. 
 
 # 
 # abstract: |
@@ -97,20 +97,27 @@ knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
 ```
 
 
-
-
-
-
-
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-tweet_fail<-read_csv("./error_analysis_bruna/tweet_fail.csv",col_types = cols())
-twitter_fail_summary<-read_csv("./error_analysis_bruna/twitter_fail_summary.csv",col_types = cols())
+tweet_fail<-read_csv("./error_analysis_bruna/validation_output/twitter_fail.csv",col_types = cols())
+twitter_fail_summary<-read_csv("./error_analysis_bruna/validation_output/twitter_fail_summary.csv",col_types = cols())
 ```
 
-<!-- # Introduction -->
+# Introduction 
 
 Efforts to advance Diversity, Equity, and Inclusion (hereafter, DEI) at universities in the United States have emerged as another contentious issue in an increasingly polarized political climate [@PlanDismantle2023]. While individuals and organizations critical of DEI often claim that these programs have become increasingly pervasive and ideological, this assertion is rarely supported with empirical evidence.  
-One organization that has been critical of DEI efforts is the National Association of Scholars (NAS), which defines its mission as "upholding the standards of a liberal arts education" [@UsNAS]. The NAS recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological], who claim it is the largest quantitative study to date of DEI-related language in the science, technology, engineering, and mathematics (STEM) disciplines. Goad and Chartwell searched university web pages and Twitter accounts, data bases of funding agencies, and repositories of the scientific literature to quantify changes over time in the use of DEI-related terminology (e.g., "advocacy", "ally", "diversity", "equity", "justice", "privilege", "race"). They claim that the use of these terms in university communications and the scientific literature has increased dramatically since 2010, which they argue is robust empirical evidence of "ideological intensification" in the academic and scientific enterprise. They further conclude that "the future of STEM, along with the rest of the academy, is almost certainly imperiled" if this intensification continues unchecked (@goad2022ideological, p. 47). Since its release in December 2022, the NAS report has been widely hailed and distributed by other prominent DEI critics, including Jordan Peterson, Colin Wright, and Christopher Rufo [@petersonJordanbpetersonRetweetNASorg2022;@rufoRealchrisrufoRetweetGoadMason2023; @goadIdeologicalIntensificationSTEM2023].  
-Goad and Chartwell made the laudable decision to post the code used to harvest and clean the data used in their report, along with the raw and processed data sets, "so that other analysts can scrutinize the methods and replicate them" [@nasorgNationalAssociationScholars2022, p. 48]. Here I show that their methods for gathering and processing online data, coupled with a failure to conduct rudimentary data validation procedures, resulted in "clean" data sets riddled with errors, including thousands of duplicated or irrelevant records. Notable examples include more than 5000 race-related tweets about sporting events, hundreds of grants to study species or genetic diversity, a dataset of NIH grants in which over 66% of the records were duplicates, and hundreds of DEI-related 'scientific articles' that were actually published in legal, humanities, or cultural studies journals (see _Supplement 1_).                
-Because Goad and Chartwell's visualizations and conclusions were based entirely on these data sets, the National Association of Scholars should immediately retract their report. Failure to do so would undermine both the institutional integrity and intellectual rigor that it espouses as guiding principles.
+The National Association of Scholars (NAS) recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological] which they claim is "the largest quantitative study of the growth of DEI-related language in the sciences" published to date. Goad and Chartwell searched university web pages and Twitter accounts, data bases of funding agencies, and repositories of the scientific literature to quantify changes over time in the use of DEI-related terminology (e.g., "advocacy", "ally", "diversity", "equity", "justice", "privilege", "race"). They conclude that the use of these terms in university communications and the scientific literature has increased dramatically since 2010, and that this is unambiguous empirical evidence of "ideological intensification" in the academic and scientific arenas. Goad and Chartwell conclude by encouraging others to use their data-mining tools and database in similar studies, because if the trends they observed continue "the future of STEM, along with the rest of the academy, is almost certainly imperiled" (@goad2022ideological, p. 47). Since its release in December 2022, the NAS report has been widely hailed and distributed by prominent DEI critics such as Jordan Peterson, Colin Wright, and Christopher Rufo [@petersonJordanbpetersonRetweetNASorg2022;@rufoRealchrisrufoRetweetGoadMason2023; @goadIdeologicalIntensificationSTEM2023].  
+Goad and Chartwell made the laudable decision to post the code used to harvest and process the data used in their report [@national_association_of_scholars_2022_6360904], along with the data with which they graphed the trends on which they base their conclusions [@nationalassociationofscholarsDataQuantitativeStudy2022], "so that other analysts can scrutinize the methods and replicate them" (@goad2022ideological, p. 48). Having done so, it is obvious that they failed to carry out even the most rudimentary data validation procedures: their "clean" data sets are riddled with thousands of records unrelated to their study as well as duplicates that vastly inflate their sample sizes. Notable examples include more than 5000 tweets about sporting events ("race"), members of the state or federal bench ("justice"), banking ("equity"), and other non-DEI topics, hundreds of grants, publications, and tweets about ecological research ("diversity"), thousands of duplicated grants, and articles published in journals such as journals the Annual Review of Sthat were treated as publications in "STEM journals" (see _Appendix_).        
+Because Goad and Chartwell's conclusions were based entirely on visualizations of these data, the National Association of Scholars should retract their report immediately. Failure to do so will undermine both the institutional integrity and intellectual rigor that they claim to espouse as fundamental principles.
+
+
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::
+
+# (APPENDIX) Appendix {-} 
+
+```{r child = "./error_analysis_bruna/response_ms/Bruna_Supplement.Rmd"}
+```
