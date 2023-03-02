@@ -133,6 +133,7 @@ diversity_nsf_fail <- diversity_nsf %>%
   filter(str_detect(title, "implicit bias") == FALSE) %>%
   filter(str_detect(title, "indigenous") == FALSE) %>%
   filter(str_detect(title, "inclusion") == FALSE) %>%
+  filter(str_detect(title, "inclusive") == FALSE) %>%
   filter(str_detect(title, "intersectional") == FALSE) %>%
   filter(str_detect(title, "justice") == FALSE) %>%
   filter(str_detect(title, "kendi") == FALSE) %>%
@@ -165,22 +166,9 @@ write_csv(diversity_nsf_fail, "./error_analysis_bruna/validation_output/grants_n
 
 # NSF Duplicates ----------------------------------------------------------
 
-# some titles are duplicates because they are program
-# start to id them with this
-duplicated_titles <- n %>%
-  group_by(title) %>%
-  tally() %>%
-  arrange(desc(n)) %>%
-  filter(n > 5)
-
-# These are all different grants, so filter them out of any title duplicates
-# postdoctoral research fellowship
-# postdoctoral fellowship
-# graduate research fellowship
-# summer institute
-
-# df of all grants that have identical title and fund_date
-dupes_nsf <- n %>%
+# df of all grants that have identical title and fund_date, exclude postdoc and grf
+# which have no project title (only program)
+dupes_nsf_all <- n %>%
   get_dupes(title) %>%
   filter(str_detect(title, "postdoctoral research fellowship") == FALSE) %>%
   filter(str_detect(title, "postdoctoral fellowship") == FALSE) %>%
@@ -188,14 +176,18 @@ dupes_nsf <- n %>%
   filter(str_detect(title, "graduate reserach fellowship program") == FALSE) %>%
   filter(str_detect(title, "waterman") == FALSE) %>%
   filter(str_detect(title, "summer institute") == FALSE) %>%
-  as_tibble()
-nrow(dupes_nsf) / nrow(n) * 100
-nsf_nodupe <- anti_join(n, dupes_nsf) %>% as_tibble()
-dupes_nsf <- dupes_nsf %>% distinct(title)
+  as_tibble() %>% 
+  mutate(agency="nsf") %>% 
+  relocate(agency,.before=1)
+# nrow(dupes_nsf) / nrow(n) * 100
+nsf_nodupe <- anti_join(n, dupes_nsf_all) %>% as_tibble()
+dupes_nsf <- dupes_nsf_all %>% distinct(title)
 nsf_nodupe <- bind_rows(nsf_nodupe, dupes_nsf)
 nrow(nsf_nodupe)
-# The percentage of the nsf file that is duplicated
-nrow(nsf_nodupe) / nrow(n) * 100
+# # The percentage of the nsf file that is duplicated
+# nrow(n)-nrow(nsf_nodupe)
+# 
+# 100-(nrow(nsf_nodupe) / nrow(n) * 100)
 
 
 dupes_nsf_slim <- nsf_nodupe %>% distinct(title)
@@ -230,41 +222,57 @@ last_dupes
 
 dupes_nsf
 
-
-nsf_perc_duplicated <- (nrow(dupes_nsf) / nrow(n)) * 100 %>% as_tibble()
-nsf_perc_duplicated <- nsf_perc_duplicated %>%
-  rename("percent_duplicated_rows" = "value") %>%
-  mutate(agency = "nsf") %>%
-  relocate(agency, .before = 1)
-
+# 
+# 
+# 
+# nsf_perc_duplicated <- (nrow(dupes_nsf) / nrow(n)) * 100 %>% as_tibble()
+# nsf_perc_duplicated <- nsf_perc_duplicated %>%
+#   rename("percent_duplicated_rows" = "value") %>%
+#   mutate(agency = "nsf") %>%
+#   relocate(agency, .before = 1)
+# 
 
 # NIH duplicates ----------------------------------------------------------
 
 
 # total duplicated records
-dupes_nih <- nih %>%
-  get_dupes(project_title, program_official_information, project_start_date)
+dupes_nih_all <- nih %>%
+  get_dupes(project_title, program_official_information, project_start_date) %>% 
+  mutate(agency="nih") %>% 
+  relocate(agency,.before=1)
 
 names(nih)
 
-nrow(dupes_nih) / nrow(nih) * 100
+nrow(dupes_nih_all) / nrow(nih) * 100
 nih_deduped <- nih %>%
   group_by(project_title, program_official_information) %>%
   summarize(n = n()) %>%
   arrange(desc(n)) %>%
   distinct(project_title)
 
-nih_perc_duplicated <- (1 - (nrow(nih_deduped) / nrow(nih))) * 100 %>% as_tibble()
-nih_perc_duplicated <- nih_perc_duplicated %>%
-  rename("percent_duplicated_rows" = "value") %>%
-  mutate(agency = "nih") %>%
-  relocate(agency, .before = 1)
-nih_perc_duplicated
+# nih_perc_duplicated <- (1 - (nrow(nih_deduped) / nrow(nih))) * 100 %>% as_tibble()
+# nih_perc_duplicated <- nih_perc_duplicated %>%
+#   rename("percent_duplicated_rows" = "value") %>%
+#   mutate(agency = "nih") %>%
+#   relocate(agency, .before = 1)
+# nih_perc_duplicated
 
 # bind nih and nsh dupes together ------------------------------------------
 
-duplicated_records <- bind_rows(nih_perc_duplicated, nsf_perc_duplicated) %>%
-  mutate(percent_duplicated_rows = round(percent_duplicated_rows, 2))
+nsf_dupes_summary <- data.frame(n_deduped = nrow(nsf_nodupe), n_original = nrow(n))
+nsf_dupes_summary$dataset <- "NSF"
+nih_dupes_summary <- data.frame(n_deduped = nrow(nih_deduped), n_original = nrow(nih))
+nih_dupes_summary$dataset <- "NIH"
+grant_dupes_summary <- bind_rows(nsf_dupes_summary, nih_dupes_summary) %>%
+  relocate(dataset, .before = 1) %>%
+  mutate(perc_inflated = (n_original-n_deduped)/n_deduped * 100) %>%
+  mutate(perc_inflated = round(perc_inflated, 2))
+
+write_csv(grant_dupes_summary, "./error_analysis_bruna/validation_output/grant_dupes_summary.csv")
+
+
+
+duplicated_records <- bind_rows(dupes_nsf_all, dupes_nih_all)
 
 
 write_csv(duplicated_records, "./error_analysis_bruna/validation_output/grants_dupes.csv")

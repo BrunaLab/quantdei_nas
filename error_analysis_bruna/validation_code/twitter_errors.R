@@ -122,6 +122,7 @@ race_fail <- race_fail %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "justice") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%
   filter(str_detect(text, "microaggression") == FALSE) %>%
@@ -180,6 +181,7 @@ justice_fail <- justice_tweets %>%
   filter(str_detect(text, "implicit bias") == FALSE) %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%
   filter(str_detect(text, "microaggression") == FALSE) %>%
@@ -258,6 +260,7 @@ diversity_fail <- diversity_tweets %>%
   filter(str_detect(text, "implicit bias") == FALSE) %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
   filter(str_detect(text, "justice") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%
@@ -320,6 +323,7 @@ equity_fail <- equity_tweets %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "justice") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%
   filter(str_detect(text, "microaggression") == FALSE) %>%
@@ -384,6 +388,7 @@ advocacy_fail <- advocacy_tweets %>%
   filter(str_detect(text, "implicit bias") == FALSE) %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
   filter(str_detect(text, "justice") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%
@@ -452,6 +457,7 @@ ally_fail <- ally_tweets %>%
   filter(str_detect(text, "implicit bias") == FALSE) %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
   filter(str_detect(text, "justice") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%
@@ -515,6 +521,7 @@ privilege_fail <- privilege_tweets %>%
   filter(str_detect(text, "implicit bias") == FALSE) %>%
   filter(str_detect(text, "indigenous") == FALSE) %>%
   filter(str_detect(text, "inclusion") == FALSE) %>%
+  filter(str_detect(text, "inclusive") == FALSE) %>%
   filter(str_detect(text, "intersectional") == FALSE) %>%
   filter(str_detect(text, "justice") == FALSE) %>%
   filter(str_detect(text, "kendi") == FALSE) %>%

@@ -83,18 +83,50 @@ gs_no_source <- gs_deduped %>%
 
 gs_neurology <- gs_deduped %>%
   filter(source == "neurology") %>%
-  filter(str_detect(title, "gender") == FALSE) %>%
-  filter(str_detect(title, "inclusion") == FALSE) %>%
-  filter(str_detect(title, "racism") == FALSE) %>%
-  filter(str_detect(title, "racial") == FALSE) %>%
-  filter(str_detect(title, "civil right") == FALSE) %>%
-  filter(str_detect(title, "gender") == FALSE) %>%
-  filter(str_detect(title, "reform") == FALSE) %>%
-  filter(str_detect(title, "equality") == FALSE) %>%
+  filter(str_detect(title, "1619 project") == FALSE) %>%
+  filter(str_detect(title, "advocacy") == FALSE) %>%
+  filter(str_detect(title, "ally") == FALSE) %>%
+  filter(str_detect(title, "anti-racism") == FALSE) %>%
+  filter(str_detect(title, "antiracism") == FALSE) %>%
+  # filter(str_detect(title, "bias") == FALSE) %>%
   filter(str_detect(title, "black lives") == FALSE) %>%
-  filter(str_detect(title, "social change") == FALSE) %>%
+  filter(str_detect(title, "black lives matter") == FALSE) %>%
+  filter(str_detect(title, "blm") == FALSE) %>%
+  filter(str_detect(title, "civil right") == FALSE) %>%
+  filter(str_detect(title, "critical race theory") == FALSE) %>%
+  filter(str_detect(title, "culturally sensitive") == FALSE) %>%
+  filter(str_detect(title, "discrimination") == FALSE) %>%
+  filter(str_detect(title, "diversity") == FALSE) %>%
+  filter(str_detect(title, "diverse") == FALSE) %>%
+  filter(str_detect(title, "equity") == FALSE) %>%
+  filter(str_detect(title, "equality") == FALSE) %>%
+  # filter(str_detect(title, "gender") == FALSE) %>%
+  filter(str_detect(title, "george floyd") == FALSE) %>%
+  filter(str_detect(title, "inequality") == FALSE) %>%
+  filter(str_detect(title, "implicit bias") == FALSE) %>%
+  filter(str_detect(title, "indigenous") == FALSE) %>%
+  filter(str_detect(title, "inclusion") == FALSE) %>%
+  filter(str_detect(title, "inclusive") == FALSE) %>%
+  filter(str_detect(title, "intersectional") == FALSE) %>%
+  filter(str_detect(title, "justice") == FALSE) %>%
+  filter(str_detect(title, "kendi") == FALSE) %>%
+  filter(str_detect(title, "microaggression") == FALSE) %>%
+  filter(str_detect(title, "multicultural") == FALSE) %>%
+  filter(str_detect(title, "oppression") == FALSE) %>%
+  filter(str_detect(title, "privilege") == FALSE) %>%
+  # filter(str_detect(title, "race") == FALSE) %>%
+  filter(str_detect(title, "racism") == FALSE) %>%
+  # filter(str_detect(title, "racial") == FALSE) %>%
+  filter(str_detect(title, "racist") == FALSE) %>%
+  filter(str_detect(title, "reform") == FALSE) %>%
   filter(str_detect(title, "social justice") == FALSE) %>%
-  filter(str_detect(title, "oppression") == FALSE) %>% 
+  filter(str_detect(title, "social change") == FALSE) %>%
+  filter(str_detect(title, "systemic racism") == FALSE) %>%
+  filter(str_detect(title, "transgender") == FALSE) %>%
+  # filter(str_detect(title, "trans") == FALSE) %>%
+  filter(str_detect(title, "underrepresented") == FALSE) %>%
+  filter(str_detect(title, "white fragility") == FALSE) %>%
+  filter(str_detect(title, "white supremacy") == FALSE) %>% 
   mutate(database="Google Scholar")
   
 
@@ -196,6 +228,7 @@ pm_nondei <- pm_deduped %>%
   filter(str_detect(title, "implicit bias") == FALSE) %>%
   filter(str_detect(title, "indigenous") == FALSE) %>%
   filter(str_detect(title, "inclusion") == FALSE) %>%
+  filter(str_detect(title, "inclusive") == FALSE) %>%
   filter(str_detect(title, "intersectional") == FALSE) %>%
   filter(str_detect(title, "justice") == FALSE) %>%
   filter(str_detect(title, "kendi") == FALSE) %>%
@@ -233,8 +266,9 @@ pm_dupes_summary <- data.frame(n_deduped = nrow(pm_deduped), n_original = nrow(p
 pm_dupes_summary$dataset <- "pubmed"
 pubs_dupes_summary <- bind_rows(gs_dupes_summary, pm_dupes_summary) %>%
   relocate(dataset, .before = 1) %>%
-  mutate(perc_inflated = 100 - (n_deduped / n_original) * 100) %>%
+  mutate(perc_inflated = (n_original-n_deduped)/n_deduped * 100) %>%
   mutate(perc_inflated = round(perc_inflated, 2))
+
 
 write_csv(pubs_dupes_summary, "./error_analysis_bruna/validation_output/pubs_dupes_summary.csv")
 # save csv files GS-------------------------------------------------------
