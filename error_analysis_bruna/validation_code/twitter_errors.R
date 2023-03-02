@@ -4,6 +4,7 @@
 require(tidyverse)
 require(glue)
 require(here)
+library(textclean)
 
 # point to root -----------------------------------------------------------
 
@@ -13,9 +14,8 @@ source(glue("{here}/code/setup.R"))
 
 # load "clean tweets" -----------------------------------------------------
 
-t <- fread(glue("{here}/out/twitter/tweets_clean.csv")) %>%
-  as_tibble()
-names(t)
+t <- fread(glue("{here}/out/twitter/tweets_clean.csv")) 
+# names(t)
 
 
 # column for keyword ------------------------------------------------------
@@ -26,7 +26,27 @@ t <- t %>%
   select(-one) %>% # delete unused portions
   relocate(category, account, .before = 1) %>%
   mutate(category = str_sub(category, 1, -5)) %>% # remove .Rds
-  mutate_all(tolower)
+  mutate_all(tolower) %>% 
+  mutate_all(trimws) 
+
+# clean text --------------------------------------------------------------
+
+# the following section will remove the twitter handles, urls, email addresses, 
+# emoticons, etc. to streamline the presentation. The originals are still there.
+
+# To get an idea of what issues there are run this
+# check_text(t$text)
+
+t<-t %>% 
+  mutate(text_original=text) %>%
+  mutate(text=replace_tag(text,replacement="@--")) %>%
+  mutate(text=replace_url(text,replacement="[url]")) %>%
+  mutate(text=replace_email(text,replacement="[email]")) %>%
+  mutate(text=replace_emoticon(text)) %>%
+  mutate(text=replace_white(text)) %>%
+  mutate(text=replace_html(text, symbol=TRUE))
+
+
 
 # The duplicate tweets are mostly retweets or repeat of theme tweets
 # (eg, black history month) shared several times. Will not treat these
