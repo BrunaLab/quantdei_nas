@@ -1,5 +1,7 @@
 
-# DISCLAIMER
+Code for identifying errors in datasets used in the report _Quantitative Study of Diversity, Equity and Inclusion in STEM Subjects in American Universities_ (National Association of Scholars, 2022)
+
+## DISCLAIMER
 
 This is a fork of the NAS repo; it is being used to identify errors and flaws in thier data processing and analysis. **_I am not affiliated with the NAS in any way._**
 
