@@ -1,5 +1,5 @@
 
-Code for identifying errors in datasets used in the report _Quantitative Study of Diversity, Equity and Inclusion in STEM Subjects in American Universities_ (National Association of Scholars, 2022)
+## Code for identifying errors in datasets used in the report _Quantitative Study of Diversity, Equity and Inclusion in STEM Subjects in American Universities_ (National Association of Scholars, 2022)
 
 ## DISCLAIMER
 
