@@ -47,7 +47,7 @@ t <- t %>%
 dei_terms <- c("1619 project","anti-racism", "antiracism",
                "bias", "black lives", "black lives matter","blm", "civil right",
                "critical race theory","culturally sensitive","discrimination",
-               "equality", "gender", "george floyd",
+               "equality", "gender", "george floyd", "minority",
                "inequality","implicit bias","indigenous", 
                "inclusion", "intersectional", "inclusive", 
                "ibram",
@@ -74,7 +74,8 @@ race_terms = c("team","compete","human race","road race","motorcycle",
                "cross country","rowing","football","triathl","baseball",
                "olympics","basketball","espn","acc ","title","space race",
                "doeracetozero","patsrun","endurance","robot","relay race",
-               "amazing race","boston", "stadium","field")
+               "amazing race","boston", "stadium","field", "training",
+               "sweat")
 
 # add the additional search terms EXCEPT race
 dei_terms_race<-c(dei_terms,c("advocacy","ally","equity","justice",
@@ -510,7 +511,7 @@ ally_tweets <- t %>% filter(category == "ally")
 
 ally_terms<-c("@ally_","@ally","softball","tennis","gymnast","lacross",
               "hockey","golf","water polo", "waterpolo","basketball",
-              "swim","pool","ncaa","soccer","champion"
+              "swim","pool","ncaa","soccer","champion",
               "athlet","single", "sport", "stadium","field")
 
 
@@ -693,12 +694,14 @@ tweet_fail <- bind_rows(
 tweet_fail<-tweet_fail %>% 
   mutate(text_original=text) %>%
   mutate(text=replace_tag(text,replacement="@--")) %>%
-  mutate(text=replace_url(text,replacement="[url]")) %>%
+  mutate(text=replace_url(text,replacement="")) %>%
+  # mutate(text=replace_url(text,replacement="[url]")) %>%
   mutate(text=replace_email(text,replacement="[email]")) %>%
   mutate(text=replace_emoticon(text)) %>%
-  mutate(text=replace_emoji(text)) %>%
+  mutate(text=str_remove_all(text,pattern = '[:emoji:]')) %>% 
+  # mutate(text=replace_emoji(text)) %>%
   mutate(text=replace_white(text)) %>%
-  mutate(text=replace_html(text, symbol=TRUE))
+  mutate(text=replace_html(text, symbol=FALSE))
 
 
 
@@ -732,6 +735,6 @@ twitter_fail_summary <- tweet_fails_by_cat %>%
   mutate(perc_fail = (fail_tweets / tweets_in_cat) * 100) %>%
   mutate(total_tweets_reviewed = sum(tweets_in_cat)) %>%
   mutate(total_tweets_clean = nrow(t)) %>% 
-  arrange(perc_fail)
+  arrange(perc_fail) 
 
 write_csv(twitter_fail_summary, "./error_analysis_bruna/validation_output/twitter_notdei_summary.csv")
