@@ -1,0 +1,52 @@
+---
+title: ""
+# title             : "Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars"
+# shorttitle        : "Flawed data validation by the NAS"
+
+author: "Emilio M. Bruna"
+fontsize: 12pt
+font: Times New Roman
+bibliography      : "NAS_response.bib"
+csl: "science.csl"
+fig_caption: yes
+keep_tex: yes
+# site: bookdown::bookdown_site
+header-includes:
+# - \usepackage{fancyhdr}
+# - \pagestyle{fancy}
+# - \fancyfoot{}
+# - \fancyhead[R]{Supplement, p. \thepage}
+# - \fancyhead[L]{E. M. Bruna}
+# - \usepackage[default]{sourcesanspro}
+# - \usepackage{parskip}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+- \AtBeginDocument{\let\maketitle\relax}
+# - \usepackage{sectsty} \allsectionsfont{\raggedright}
+- \usepackage{titlesec}
+- \raggedbottom
+- \usepackage{lineno}
+- \linenumbers
+# - \linenumbers
+- \usepackage{caption}
+# - \usepackage{sectsty} \sectionfont{\centering\color{darkmidnightblue}}
+# - \usepackage{sectsty} \subsectionfont{\centering\color{darkmidnightblue}
+- \usepackage{sectsty} \sectionfont{\centering\color{black}\fontsize{14}{15}}
+- \usepackage{sectsty} \subsectionfont{\centering\color{black}\fontsize{12}{10}}
+- \usepackage{sectsty} \subsubsectionfont{\normalfont\centering\color{black}\fontsize{12}{10}}
+- \usepackage{caption}
+- \DeclareCaptionLabelFormat{Sformat}{#1 S#2}
+# - \usepackage{sectsty} \subsectionfont{\color{darkmidnightblue}}
+- \titlespacing{\section}{0pt}{10pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+# - \titlespacing{\subsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+- \titlespacing{\subsubsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+- \setlength{\headheight}{14.49998pt}
+- \setlength\parindent{24pt}
+output: pdf_document
+mainfont: Times New Roman
+---
+
+
+```{r, child=c('./error_analysis_bruna/response_ms/bruna_nas_ms.Rmd','./error_analysis_bruna/response_ms/bruna_supplement.Rmd')}
+```
+

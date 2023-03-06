@@ -14,15 +14,16 @@ linkcolor: darkmidnightblue
 urlcolor: darkmidnightblue
 bibliography      : "NAS_response.bib"
 csl: "science.csl"
+suppress-bibliography: TRUE
 fig_caption: yes
 keep_tex: yes
 # site: bookdown::bookdown_site
 header-includes:
 - \usepackage{fancyhdr}
-- \pagestyle{fancy}
-- \fancyfoot{}
-- \fancyhead[R]{Supplement, p. \thepage}
-- \fancyhead[L]{E. M. Bruna}
+# - \pagestyle{fancy}
+# - \fancyfoot{}
+# - \fancyhead[R]{Supplement, p. \thepage}
+# - \fancyhead[L]{E. M. Bruna}
 # - \usepackage[default]{sourcesanspro}
 - \usepackage{parskip}
 - \newcommand{\blandscape}{\begin{landscape}}
@@ -33,16 +34,18 @@ header-includes:
 - \usepackage{titlesec}
 - \raggedbottom
 - \usepackage{lineno}
+- \setlength\parindent{24pt}
 - \linenumbers
 # - \linenumbers
 - \usepackage{caption}
 # - \usepackage{sectsty} \sectionfont{\centering\color{darkmidnightblue}}
-# - \usepackage{sectsty} \subsectionfont{\centering\color{darkmidnightblue}}
-
-- \usepackage{sectsty} \sectionfont{\centering\color{black}}
-- \usepackage{sectsty} \subsectionfont{\centering\color{black}}
+# - \usepackage{sectsty} \subsectionfont{\centering\color{darkmidnightblue}
+- \usepackage{sectsty} \sectionfont{\centering\color{black}\fontsize{18}{15}}
+- \usepackage{sectsty} \subsectionfont{\centering\color{black}\fontsize{14}{10}}
+- \usepackage{sectsty} \subsubsectionfont{\normalfont\centering\color{black}\fontsize{12}{10}}
 - \usepackage{caption}
-- \DeclareCaptionLabelFormat{Sformat}{#1 S#2}
+- \DeclareCaptionLabelFormat{Sformat}{#1 S#2}  
+- \captionsetup[table]{labelformat=Sformat}
 # - \usepackage{sectsty} \subsectionfont{\color{darkmidnightblue}}
 - \titlespacing{\section}{0pt}{10pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
 # - \titlespacing{\subsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
@@ -51,6 +54,7 @@ header-includes:
 - \definecolor{darkmidnightblue}{rgb}{0.0, 0.2, 0.4}
 - \setlength{\headheight}{14.49998pt}
 output: pdf_document
+mainfont: Times New Roman
 ---
 
 
@@ -76,16 +80,59 @@ knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
 
 <!-- # suppress header on P1 -->
 \thispagestyle{empty}  
+\renewcommand\linenumberfont{\color{white}}
 
-# Supplement to: 'Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars'
-## Emilio M. Bruna, University of Florida^[Department of Wildlife Ecology and Conservation, University of Florida, PO Box 110430, Gainesville, FL 32611-0430, USA and Center for Latin American Studies, University of Florida, PO Box 115530, Gainesville, FL 32611-5530, USA. embruna@ufl.edu]
 
-&nbsp;
+<!-- ![](./science_ms_guidelines/science_wide.png){ width="85%" style="display: block; margin: 0 auto" } -->
+
+
+# Supplementary Materials for
+
+&nbsp;  
 &nbsp;  
 
-### Data Review and Validation: Overview  
+## Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars
 
-Below I present a brief overview of the methods used to review the contents of 5 datasets used by Goad and Chartwell to visualize trends in DEI-language use. These datasets can be found in the `'out/twitter'`,`'out/grants'`, and `'out/scholarship'` folders of the NAS Report's Github repository [@goadIdeologicalIntensificationSTEM2023].
+&nbsp;  
+
+
+### Emilio M. Bruna
+
+&nbsp;  
+
+
+### Corresponding author: embruna@ufl.edu  
+
+&nbsp;  
+
+
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+**The PDF file includes:**
+
+>Materials and Methods  
+>Tables S1 to S5  
+
+\newpage
+\renewcommand\linenumberfont{\color{black}}
+\raggedright
+**Supplementary Text: NAS Data Cleaning and Validation**  
+
+\parindent=.35in
+  Below I present a brief overview of the methods used to review the contents of 5 datasets used by Goad and Chartwell to visualize trends in DEI-language use. These datasets can be found in the `'out/twitter'`,`'out/grants'`, and `'out/scholarship'` folders of the NAS Report's Github repository [@goadIdeologicalIntensificationSTEM2023].
 
 1. University Twitter accounts: `tweets_clean.csv`
 1. National Science Foundation (i.e., NSF) grants: `nsf_all_grants_summary_data.csv` 
@@ -95,7 +142,9 @@ Below I present a brief overview of the methods used to review the contents of 5
 
 Although many of these errors would be detected immediately by simply scanning the datasets, I  wrote code in the R statistical programming language [@rcoreteamLanguageEnvironmentStatistical2020] to conduct some simple data validation tests. This code, which included functions from the `tidyverse` [@wickhamWelcomeTidyverse2019], `textedit` [@rinkerTextcleanTextCleaning2018], and `janitor` [@firkeJanitorSimpleTools2021] libraries for cleaning, filtering, de-duplicating, and summarizing data frames, is available on Github (https://github.com/embruna/quantdei_nas).  The github repository also includes `.csv` files of output of these validations (e.g., lists of duplicated records). Below I provide summaries and representative examples of the errors revealed by the validation tests. 
 
-### University Twitter accounts
+&nbsp;  
+\parindent=0in
+**University Twitter accounts**
 
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -116,13 +165,22 @@ total_tweets_fail<-twitter_notdei_summary %>%
 min_perc<-round(min(twitter_notdei_summary$perc_fail),2)
 max_perc<-round(max(twitter_notdei_summary$perc_fail),2)
 ```
-**_Methods: _**Goad and Chartwell searched 895 university accounts for over 20 terms they define as DEI-related [@goad2022ideological]. They used the resulting dataset of N = `r total_tweets_clean` tweets (`'tweets_clean.csv'`) to graph the use of the DEI-terms over time. Many of the terms for which they searched, however, have uses and meanings beyond DEI. For instance, "race" could refer to competitions or athletic events, "ally" is a common nickname for "Allison", "justice" is the title used by members of federal or state bench, and introductions are often prefaced by the phrase "it is my privilege to...".   
+<!-- &nbsp;   -->
+
+$\text{\underline{Methods}}$   
+\parindent=.35in
+  Goad and Chartwell searched 895 university accounts for over 20 terms they define as DEI-related [@goad2022ideological]. They used the resulting dataset of N = `r total_tweets_clean` tweets (`'tweets_clean.csv'`) to graph the use of the DEI-terms over time. Many of the terms for which they searched, however, have uses and meanings beyond DEI. For instance, "race" could refer to competitions or athletic events, "ally" is a common nickname for "Allison", "justice" is the title used by members of federal or state bench, and introductions are often prefaced by the phrase "it is my privilege to...".   
 
 I reviewed Goad and Chartwell's twitter dataset for tweets that might be using seven of their DEI-related search terms in a non-DEI context. These terms were: "advocacy", "ally", "diversity", "equity", "justice", "privilege", and "race". I first filtered `'tweets_clean.csv'` for all tweets they assigned to a term (e.g., "race"), then searched this subset of tweets for strings related to non-DEI uses of that term (e.g., "5K", "nascar", "sailing", "swim", "ncaa","cross country"). To ensure that the resulting tweets were not related to DEI, I eliminated any that included the entire suite of DEI-terms with which Goad and Chartwell conducted their searches (e.g., "racism", "equality", "gender", "social justice", "blm"), along with some additional terms that review of the output could be interpreted as DEI-related^[terms used to exclude potential DEI-related tweets: "1619 project", "advocacy", "ally", "justice", "privilege","diversity","diverse""anti-racism", "antiracism", "bias", "black lives", "black lives matter", "blm", "civil right", "critical race theory", "culturally sensitive", "discrimination", "equality", "equity", "gender", "george floyd", "inequality", "implicit bias", "indigenous", "inclusion", "intersectional", "inclusive", "kendi", "microaggression","minority", "multicultural", "oppression", "racism", "racial", "racist", "reform", "social justice", "social change", "systemic racism", "transgender", "underrepresented", "white fragility", "white supremacy"]. Note that this method provides a conservative estimate of any non-DEI tweets that were included in Goad and Chartwell's analyses, as it only captures tweets using the non-DEI terms for which I searched. The code with the complete list of these terms can be found in `"validation code/twitter_errors.R"`, while the file `'validation_output/twitter_notdei.csv'` contains the non-DEI tweets returned by the algorithm (see also Table S1 for examples).  
+&nbsp;  
+\parindent=0in
+$\text{\underline{Results}}$   
+\parindent=.35in
+  The seven search terms reviewed comprise N = `r total_tweets_reviewed` tweets, which is `r round(total_tweets_reviewed/total_tweets_clean*100,2)`% of Goad and Chartwell's twitter dataset. With the conservative validation method described above, I found that `r round(((total_tweets_fail/total_tweets_reviewed)*100),2)`% of the tweets for the seven focal terms  were not actually DEI-related, with the percentage of irrelevant tweets for a given term ranging from `r min_perc` - `r max_perc`% (Table 2). 
 
-**_Results: _**The seven search terms reviewed comprise N = `r total_tweets_reviewed` tweets, which is `r round(total_tweets_reviewed/total_tweets_clean*100,2)`% of Goad and Chartwell's twitter dataset. With the conservative validation method described above, I found that `r round(((total_tweets_fail/total_tweets_reviewed)*100),2)`% of the tweets for the seven focal terms  were not actually DEI-related, with the percentage of irrelevant tweets for a given term ranging from `r min_perc` - `r max_perc`% (Table 2). 
-
-### NIH and NSF grants
+&nbsp;  
+\parindent=0in
+**NIH and NSF grants**
 
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -131,16 +189,25 @@ grant_dupes<-read_csv("./error_analysis_bruna/validation_output/grants_dupes.csv
 grant_summary<-read_csv("./error_analysis_bruna/validation_output/grant_dupes_summary.csv",col_types = cols())
 nsf_div<-read_csv("./error_analysis_bruna/validation_output/diversity_nsf_fail_summary.csv",col_types = cols())
 ```
-**_Methods: _**A review of Goad and Chartwell's data for gathering and processing NSF and NIH data and the resulting output revealed two potential sources of error. First, they failed to correct for the mechanism by which these agencies transfer funds to the different institutions collaborating on a successful proposal. When a grant proposal that includes collaborators at different institutions is selected for funding, the agency will transfer each researcher's portion of the grant's budget directly to each institution. A single successful grant proposal may therefore be represented in the agency's database by multiple "awards". By not consolidating different awards for the same proposal in their dataset, Goad and Chartwell could vastly inflate their sample sizes for the number of DEI-related grants awarded by NSF and NIH. They also failed to verify that the grants returned by their search were in fact DEI-related.   
+<!-- &nbsp;   -->
+
+$\text{\underline{Methods}}$  
+\parindent=.35in
+  A review of Goad and Chartwell's data for gathering and processing NSF and NIH data and the resulting output revealed two potential sources of error. First, they failed to correct for the mechanism by which these agencies transfer funds to the different institutions collaborating on a successful proposal. When a grant proposal that includes collaborators at different institutions is selected for funding, the agency will transfer each researcher's portion of the grant's budget directly to each institution. A single successful grant proposal may therefore be represented in the agency's database by multiple "awards". By not consolidating different awards for the same proposal in their dataset, Goad and Chartwell could vastly inflate their sample sizes for the number of DEI-related grants awarded by NSF and NIH. They also failed to verify that the grants returned by their search were in fact DEI-related.   
 
 I searched for potential duplications in the `'nsf_all_grants_summary_data.csv'` and `'nih_parsed_all.fst'` files by filtering for grants with identical titles (NSF) or title and program officer responsible (NIH). The exceptions were records for which the title provided was the name of the program making the award (e.g., Postdoctoral Fellowship program, Graduate Reserach Fellowship program, Waterman awards); all of these records were maintained. The file `'grants_dupes.csv'` [@brunaCodeIdentifyingErrors2023] contains all duplicated grant records.  
 
 To search for the potential inclusion in their dataset of non-DEI awards, I filtered to include on NSF grants they flagged as "DEI-Diversity", and excluded all grants whose titles included the DEI-related terms applied to the Twitter dataset. I also conducted a narrower search by filtering with a set of terms frequently used in the titles of grants investigating ecological or evolutionary diversity. The resulting datasets are `'validation_output/grants_nsf_diversity_wide.csv'` and `'validation_output/grants_nsf_diversity.csv'` [@brunaCodeIdentifyingErrors2023]. Code for both of these analyses is at `"validation code/grant_errors.R"` [@brunaCodeIdentifyingErrors2023]. 
 
-**_Results: _**  By failing to consolidate financial awards to collaborators working on the same grant, Goad and Chartwell inflated their sample sized by `r grant_summary %>% filter(dataset=="NSF") %>% select(perc_inflated)`% and `r grant_summary %>% filter(dataset=="NIH") %>% select(perc_inflated)`%, respectively. After deduplicating the awards from NSF and reviewing those they flag as DEI-related, I found that at least N = `r nsf_div %>% filter(search=="limited") %>% select(not_dei)`, and possibly as many as `r nsf_div %>% filter(search=="wide") %>% select(not_dei) ` of these are actually grants for ecological or evolutionary research on genetic, phylogenetic, or species diversity (see Table S3 for examples). This represents `r nsf_div %>% filter(search=="limited") %>% select(perc_incorrect)`-`r nsf_div %>% filter(search=="wide") %>%  select(perc_incorrect) `% of the grants in this DEI category.  This represents `r nsf_div %>% filter(search=="limited") %>% select(perc_incorrect)`-`r nsf_div%>% filter(search=="wide") %>% select(perc_incorrect)`% of the grants in this DEI category.  
+&nbsp;  
+\parindent=0in
+$\text{\underline{Results}}$  
+\parindent=.35in
+By failing to consolidate financial awards to collaborators working on the same grant, Goad and Chartwell inflated their sample sized by `r grant_summary %>% filter(dataset=="NSF") %>% select(perc_inflated)`% and `r grant_summary %>% filter(dataset=="NIH") %>% select(perc_inflated)`%, respectively. After deduplicating the awards from NSF and reviewing those they flag as DEI-related, I found that at least N = `r nsf_div %>% filter(search=="limited") %>% select(not_dei)`, and possibly as many as `r nsf_div %>% filter(search=="wide") %>% select(not_dei) ` of these are actually grants for ecological or evolutionary research on genetic, phylogenetic, or species diversity (see Table S3 for examples). This represents `r nsf_div %>% filter(search=="limited") %>% select(perc_incorrect)`-`r nsf_div %>% filter(search=="wide") %>%  select(perc_incorrect) `% of the grants in this DEI category.  This represents `r nsf_div %>% filter(search=="limited") %>% select(perc_incorrect)`-`r nsf_div%>% filter(search=="wide") %>% select(perc_incorrect)`% of the grants in this DEI category.  
 
-
-### Scientific publications in Google Scholar
+&nbsp;  
+\parindent=0in
+**Scientific publications in Google Scholar**
 
 ```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -157,19 +224,29 @@ pubs_dupes_summary<-read_csv("./error_analysis_bruna/validation_output/pubs_dupe
 
 # nrow(pm_nondei)+nrow(gs_nondei)
 ```
-**_Methods: _**Finally, Goad and Chartwell sought to identify DEI-related publications in the scientific literature. To do so they searched the repositories Google Scholar, arXiv, Web of Science, and PubMed for DEI-related articles in science, technology, engineering, and mathematics (STEM) journals by using search strings including a STEM-term and one of their DEI-related terms (e.g., "biology diversity"). I reviewed their data from Google Scholar (`'google_scholar.fst'`) and Pubmed (`'google_scholar.fst'`) for duplicates and to verify the journal titles using procedures similar to those for Twitter and grant data (see `"validation code/publication_errors.R"` and output files `'gs_neurology_examples.csv'` and `'pm_nondei_examples.csv'`).
+<!-- &nbsp;   -->
 
-**_Results: _**Goad and Chartwell once again failed to search their results for duplicate records. As a result the `r sum(pubs_dupes_summary$n_original)-sum(pubs_dupes_summary$n_deduped)` duplicates that remained in these datasets inflated their estimate of DEI-related publications in Google Scholar and PubMed by `r pubs_dupes_summary %>% filter(dataset=="gs") %>% select(perc_inflated)`% and `r pubs_dupes_summary %>% filter(dataset=="pubmed") %>% select(perc_inflated)`%.  They also failed to exclude hundreds of articles that were published in cultural studies, humanities, and legal journals (Table 4 and ), as well as thousands of non-DEI articles on topics ranging from palliative care for cancer patients to transcatheter aortic valve replacements (see Table S5).  
+$\text{\underline{Methods}}$  
+\parindent=.35in
+   Finally, Goad and Chartwell sought to identify DEI-related publications in the scientific literature. To do so they searched the repositories Google Scholar, arXiv, Web of Science, and PubMed for DEI-related articles in science, technology, engineering, and mathematics (STEM) journals by using search strings including a STEM-term and one of their DEI-related terms (e.g., "biology diversity"). I reviewed their data from Google Scholar (`'google_scholar.fst'`) and Pubmed (`'google_scholar.fst'`) for duplicates and to verify the journal titles using procedures similar to those for Twitter and grant data (see `"validation code/publication_errors.R"` and output files `'gs_neurology_examples.csv'` and `'pm_nondei_examples.csv'`).
 
-### Conclusion
+&nbsp;  
+\parindent=0in
+$\text{\underline{Results}}$  
+\parindent=.35in
+  Goad and Chartwell once again failed to search their results for duplicate records. As a result the `r sum(pubs_dupes_summary$n_original)-sum(pubs_dupes_summary$n_deduped)` duplicates that remained in these datasets inflated their estimate of DEI-related publications in Google Scholar and PubMed by `r pubs_dupes_summary %>% filter(dataset=="gs") %>% select(perc_inflated)`% and `r pubs_dupes_summary %>% filter(dataset=="pubmed") %>% select(perc_inflated)`%.  They also failed to exclude hundreds of articles that were published in cultural studies, humanities, and legal journals (Table 4 and ), as well as thousands of non-DEI articles on topics ranging from palliative care for cancer patients to transcatheter aortic valve replacements (see Table S5).  
 
-The data used in Goad and Chartwell's NAS report includes thousands of duplications and irrelevant records. It is important to emphasize that the error estimates presented are conservative, as the procedures described here are merely a "first pass" using relatively simple methods; more robust validation efforts, for example using keyword co-associations, will almost certainly identify additional errors. 
+&nbsp;  
+\parindent=0in
+**Conclusion**  
+\parindent=.35in
+  The data used in Goad and Chartwell's NAS report includes thousands of duplications and irrelevant records. It is important to emphasize that the error estimates presented are conservative, as the procedures described here are merely a "first pass" using relatively simple methods; more robust validation efforts, for example using keyword co-associations, will almost certainly identify additional errors. 
 
 
-# Bibliography   
+<!-- # Bibliography -->
 
-::: {#refs custom-style="Bibliography"}
-:::
+<!-- ::: {#refs custom-style="Bibliography"} -->
+<!-- ::: -->
 \newpage
 
 

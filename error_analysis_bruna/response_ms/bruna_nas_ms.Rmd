@@ -1,0 +1,129 @@
+---
+title: ""
+# title             : "Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars"
+# shorttitle        : "Flawed data validation by the NAS"
+
+author: "Emilio M. Bruna"
+fontsize: 12pt
+font: Times New Roman
+bibliography      : "NAS_response.bib"
+csl: "science.csl"
+fig_caption: yes
+keep_tex: yes
+# site: bookdown::bookdown_site
+header-includes:
+# - \usepackage{fancyhdr}
+# - \pagestyle{fancy}
+# - \fancyfoot{}
+# - \fancyhead[R]{Supplement, p. \thepage}
+# - \fancyhead[L]{E. M. Bruna}
+# - \usepackage[default]{sourcesanspro}
+# - \usepackage{parskip}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+- \AtBeginDocument{\let\maketitle\relax}
+# - \usepackage{sectsty} \allsectionsfont{\raggedright}
+- \usepackage{titlesec}
+- \raggedbottom
+- \usepackage{lineno}
+- \linenumbers
+# - \linenumbers
+- \usepackage{caption}
+# - \usepackage{sectsty} \sectionfont{\centering\color{darkmidnightblue}}
+# - \usepackage{sectsty} \subsectionfont{\centering\color{darkmidnightblue}
+- \usepackage{sectsty} \sectionfont{\centering\color{black}\fontsize{14}{15}}
+- \usepackage{sectsty} \subsectionfont{\centering\color{black}\fontsize{12}{10}}
+- \usepackage{sectsty} \subsubsectionfont{\normalfont\centering\color{black}\fontsize{12}{10}}
+- \usepackage{caption}
+- \DeclareCaptionLabelFormat{Sformat}{#1 S#2}
+# - \usepackage{sectsty} \subsectionfont{\color{darkmidnightblue}}
+- \titlespacing{\section}{0pt}{10pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+# - \titlespacing{\subsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+- \titlespacing{\subsubsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+- \setlength{\headheight}{14.49998pt}
+- \setlength\parindent{24pt}
+output: pdf_document
+mainfont: Times New Roman
+---
+
+
+```{r setup, include = FALSE}
+# library("papaja")
+# r_refs("NAS_response.bib")
+knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE)
+library(tidyverse)
+library(gridExtra)
+library(kableExtra)
+library(egg)
+library(magick)
+```
+
+
+```{r GlobalOptions, include=FALSE}
+options(knitr.duplicate.label = 'allow')
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+# knitr::opts_chunk$set(fig.pos = 'h')
+```
+
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+tweet_fail<-read_csv("./error_analysis_bruna/validation_output/twitter_notdei.csv",col_types = cols())
+
+twitter_fail_summary<-read_csv("./error_analysis_bruna/validation_output/twitter_notdei_summary.csv",col_types = cols())
+
+fail_tweets_sum<-twitter_fail_summary %>% summarize(n=sum(fail_tweets)) %>% mutate(n=round(n,-3))
+
+grants_nsf_diversity<-read_csv("./error_analysis_bruna/validation_output/grants_nsf_diversity.csv")
+
+fail_tweets_sum<-twitter_fail_summary %>% summarize(n=sum(fail_tweets)) %>% mutate(n=round(n,-3)) 
+nsf_div_sum<-grants_nsf_diversity %>% summarize(n=nrow(grants_nsf_diversity)) %>% mutate(n=round(n,-3))
+```
+<!-- # suppress header on P1 -->
+\thispagestyle{empty}  
+
+
+
+
+# Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars  
+
+&nbsp; 
+
+### Emilio M. Bruna^1^^,^^2^^`*`^
+
+&nbsp; 
+
+### ^1^Department of Wildlife Ecology and Conservation, University of Florida; PO Box 110430, Gainesville, 32611-0430, USA.   
+
+### ^2^Center for Latin American Studies, University of Florida; PO Box 115530, Gainesville, 32611-5530, USA.  
+
+### ^`*`^embruna@ufl.edu  
+
+&nbsp;  
+&nbsp;  
+
+>> "\@arizonalumni: Good luck to former #UofA student and \@NASCAR champ \@KurtBusch as he attempts to race in both the Indy 500 and Coke 600. #BearDown!"  
+
+\raggedright
+
+&nbsp;  
+
+Efforts to advance Diversity, Equity, and Inclusion (hereafter, DEI) at universities in the United States have emerged as another contentious issue in an increasingly polarized political climate [@diepFloridaGovernorAsked2023; @kumarFloridaBillsTarget2023; @keldermanPlanDismantle2023]. While individuals and organizations critical of DEI often claim that these programs have become increasingly pervasive and ideological [@goad2022ideological], this assertion is rarely supported with empirical evidence.  
+&nbsp;  
+The National Association of Scholars (i.e., NAS) recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological] which the authors claim is "the largest quantitative study of the growth of DEI-related language in the sciences" published to date. Goad and Chartwell searched university web pages and Twitter accounts, funding agency databases, and repositories for scientific literature to quantify changes over time in the use of "DEI-related terminology" (e.g.,"diversity", "equity", "justice","race"). They claim to show a dramatic increase in the use of these terms in university communications and the scientific literature since 2010, which they view as unambiguous empirical evidence of "ideological intensification" in the academic and scientific arenas [@goad2022ideological]. Goad and Chartwell conclude that if these trends continue, "the future of STEM, along with the rest of the academy, is almost certainly imperiled" (see @goad2022ideological, p. 47), so they encourage others to use their data-mining tools and database to conduct similar research. Since the report's release in December 2022, it has been widely hailed and distributed by prominent DEI critics such as Jordan Peterson and Christopher Rufo [@petersonJordanbpetersonRetweetNASorg2022;@rufoRealchrisrufoRetweetGoadMason2023].  
+&nbsp;  
+Goad and Chartwell made the laudable decision to post the code used to harvest and process the records used in their report [@nationalassociationofscholarsCodeQuantitativeStudy2022], along with the "clean" data used to graph the trends on which they base their conclusions [@nationalassociationofscholarsDataQuantitativeStudy2022], "so that other analysts can scrutinize the methods and replicate them" (see @goad2022ideological, p. 48). Having done so [@firkeJanitorSimpleTools2021; @rcoreteamLanguageEnvironmentStatistical2020; @wickhamWelcomeTidyverse2019; @rinkerTextcleanTextCleaning2018; @brunaCodeIdentifyingErrors2023, _Supplementary Materials and Methods_], I conclude that they failed to conduct even the most rudimentary data validation procedures, and that the "clean" data sets with which they conducted their analyses contain thousands of irrelevant records and duplications. Notable examples include the tweet that opened this letter - one of over `r fail_tweets_sum` about topics ranging from sporting events ("race") to members of the Supreme Court ("justice") to hedge funds ("equity", _Tables S1,S2_) - along with almost `r nsf_div_sum` NSF grants for ecological and evolutionary research on species "diversity" (_table S3_), and hundreds of "DEI articles in STEM journals" that were actually published in outlets such as _Critical Sociology_, _The Medical Law Review_, and _The Annual Review of Law and Social Science_ (_table S4_).  
+&nbsp;  
+Policy Institutes play a vital role in shaping higher education and research policy, but only when they put scholarship ahead of ideology. Goad and Chartwell's conclusions regarding the prevalence of DEI in STEM were based entirely on visualizations of fundamentally flawed datasets. The NAS should retract their report immediately; failure to do so undermines both the integrity and intellectual rigor that they and the report's authors claim to espouse as fundamental principles.  
+
+
+\newpage
+# References
+\raggedright
+::: {#refs custom-style="Bibliography"}
+:::
+
+
+\newpage
+

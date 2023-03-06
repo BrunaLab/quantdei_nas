@@ -101,7 +101,7 @@ Table1<-knitr::kable(Table1,
       booktabs=T,
       longtable=F,
       linesep = "", #removes the blank line after every 5 lines
-      caption = "Number of irrelevant tweets attributed by Goad and Chartwell to seven different DEI terms, the total number of tweets for each term in their original dataset, and the estimated percentage of irrelevant tweets.") %>%
+      caption = "Minimum number of irrelevant tweets attributed by Goad and Chartwell to seven different DEI terms, the total number of tweets for each term in their original dataset, and the minimum percentage of irrelevant tweets.") %>%
      kable_styling(bootstrap_options = c("hover"),
                  full_width = T,
                  latex_options="scale_down",
@@ -169,7 +169,7 @@ Table2<-knitr::kable(Table2,
                position = "left") %>% 
   column_spec(column = 1, width = "4em") %>% 
   column_spec(column = 2, width = "1em") %>% 
-  column_spec(column = 3, width = "60em") %>% 
+  column_spec(column = 3, width = "50em") %>% 
   row_spec(0, bold = T) %>%
   collapse_rows(column = 1,
                 valign = "top",
