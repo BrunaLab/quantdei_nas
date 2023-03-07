@@ -5,7 +5,7 @@
 
 This is a fork of the NAS repo; it is being used to identify errors and flaws in thier data processing and analysis. **_I am not affiliated with the NAS in any way._**
 
-A prelimary summary of the mind-boggling and amateurish errors can be found on the twitter feed of EM Bruna (@BrunaLab). A more thorough primer can be found in the folder "error_analysis_bruna/response_ms" folder 
+A prelimary summary of the mind-boggling and amateurish errors can be found on the twitter feed of EM Bruna (@BrunaLab). A prreprint manuscript detailing the analysis and errors [can be found here](https://osf.io/preprints/metaarxiv/4jsca/). 
 
 ---
 
