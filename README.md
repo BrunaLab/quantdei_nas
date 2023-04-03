@@ -3,6 +3,7 @@
 
 ## DISCLAIMER
 
+
 This is a fork of the NAS repo; it is being used to identify errors and flaws in thier data processing and analysis. **_I am not affiliated with the NAS in any way._**
 
 A prelimary summary of the mind-boggling and amateurish errors can be found on the twitter feed of EM Bruna (@BrunaLab). A prreprint manuscript detailing the analysis and errors [can be found here](https://osf.io/preprints/metaarxiv/4jsca/). 
@@ -20,15 +21,15 @@ The raw files gathered as part of the analysis, and used to create the processed
 The structure of the project is like this: 
 
 	.
-	├── code
-	│	└── PREPROCESSING
-	├── graphs
-	└── out
-    	├── grants
-    	├── learned_societies
-    	├── scholarship
-    	├── school_websites
-    	└── twitter
+	????????? code
+	???	????????? PREPROCESSING
+	????????? graphs
+	????????? out
+    	????????? grants
+    	????????? learned_societies
+    	????????? scholarship
+    	????????? school_websites
+    	????????? twitter
 
 #### How the project is organized
 
