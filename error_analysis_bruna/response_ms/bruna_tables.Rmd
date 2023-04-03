@@ -1,0 +1,361 @@
+---
+title: "Mixing portrait and landscape"
+output: pdf_document
+# classoption: "donotrepeattitle"
+header-includes:
+  - \usepackage{lscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{caption}
+  - \AtBeginDocument{\let\maketitle\relax}
+  - \usepackage{caption}
+  - \DeclareCaptionLabelFormat{Sformat}{#1 S#2}
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("NAS_response.bib")
+knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE)
+library(tidyverse)
+library(gridExtra)
+library(kableExtra)
+library(egg)
+library(magick)
+```
+
+```{r GlobalOptions, include=FALSE}
+options(knitr.duplicate.label = 'allow')
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+# knitr::opts_chunk$set(fig.pos = 'h')
+```
+
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+twitter_notdei<-read_csv("./error_analysis_bruna/validation_output/twitter_notdei.csv",col_types = cols())
+twitter_notdei_summary<-read_csv("./error_analysis_bruna/validation_output/twitter_notdei_summary.csv",col_types = cols())
+
+total_tweets_reviewed<-twitter_notdei_summary %>%
+  select(total_tweets_reviewed) %>%
+  slice(1)
+
+total_tweets_clean<-twitter_notdei_summary %>%
+  select(total_tweets_clean) %>%
+  slice(1)
+
+total_tweets_fail<-twitter_notdei_summary %>%
+  summarize(sum(fail_tweets))
+
+min_perc<-round(min(twitter_notdei_summary$perc_fail),2)
+max_perc<-round(max(twitter_notdei_summary$perc_fail),2)
+```
+
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+nsf_div_grants<-read_csv("./error_analysis_bruna/validation_output/grants_nsf_diversity.csv",col_types = cols())
+grant_dupes<-read_csv("./error_analysis_bruna/validation_output/grants_dupes.csv",col_types = cols())
+grant_summary<-read_csv("./error_analysis_bruna/validation_output/grant_dupes_summary.csv",col_types = cols())
+
+number_nsfdiv<-nrow(nsf_div_grants)
+
+
+```
+
+
+```{r cached=TRUE, echo = FALSE, warning=FALSE,message = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+gs_dupes<-read_csv("./error_analysis_bruna/validation_output/gs_dupes.csv",col_types = cols())
+gs_sources<-read_csv("./error_analysis_bruna/validation_output/gs_sources_all_summary.csv",col_types = cols())
+gs_sources_not_stem<-read_csv("./error_analysis_bruna/validation_output/gs_sources_not_stem_summary.csv",col_types = cols())
+
+pm_sources_not_stem<-read_csv("./error_analysis_bruna/validation_output/pm_sources_not_stem_summary.csv",col_types = cols())
+pm_dupes<-read_csv("./error_analysis_bruna/validation_output/pm_dupes.csv",col_types = cols())
+pm_sources<-read_csv("./error_analysis_bruna/validation_output/pm_sources_all_summary.csv",col_types = cols())
+pm_nondei<-read_csv("./error_analysis_bruna/validation_output/pm_nondei_examples.csv",col_types = cols())
+gs_nondei<-read_csv("./error_analysis_bruna/validation_output/gs_neurology_examples.csv",col_types = cols())
+pubs_dupes_summary<-read_csv("./error_analysis_bruna/validation_output/pubs_dupes_summary.csv",col_types = cols())
+
+# nrow(pm_nondei)+nrow(gs_nondei)
+```
+
+<!-- \renewcommand{\arraystretch}{1} -->
+
+<!-- \captionsetup{width=8in} -->
+
+<!-- \newpage -->
+<!-- \renewcommand{\arraystretch}{1} -->
+```{r Table1, echo=FALSE,message = FALSE,warning=FALSE}
+
+Table1<-twitter_notdei_summary %>% 
+  mutate(perc_fail=round(perc_fail,2)) %>% 
+  select(-total_tweets_reviewed,-total_tweets_clean)
+
+names(Table1)<-c("DEI Term","Irrelevant Tweets (N)","Total Tweets (N)","% Irrelevant")
+
+Table1<-knitr::kable(Table1, 
+      digits = 2,
+      align="ccc",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      longtable=F,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "Minimum number of irrelevant tweets attributed by Goad and Chartwell to seven different DEI terms, the total number of tweets for each term in their original dataset, and the minimum percentage of irrelevant tweets.") %>%
+     kable_styling(bootstrap_options = c("hover"),
+                 full_width = T,
+                 latex_options="scale_down",
+                 font_size = 10,
+                position = "left")  %>% 
+    column_spec(column = 1, width = "7em") %>% 
+  column_spec(column = 2, width = "12em") %>% 
+    column_spec(column = 3, width = "12em") %>% 
+  column_spec(column = 4, width = "12em") %>% 
+  row_spec(0, bold = T) 
+
+Table1
+```
+
+<!-- \newpage -->
+<!-- \begin{landscape} -->
+
+<!-- ```{=tex} -->
+<!-- \newpage -->
+<!-- \blandscape -->
+<!-- ``` -->
+\newpage
+\blandscape
+<!-- \begin{singlespace} -->
+```{r Table2, echo=FALSE,message = FALSE,warning=FALSE}
+
+
+Table2<-twitter_notdei %>% 
+  group_by(category) %>% 
+  rename("Tweet"="text",
+         "Term"="category") %>% 
+  group_by(Term) %>% 
+  slice(1:5) %>%
+  mutate(Ex=row_number()) %>% 
+  relocate(Ex,.before=2) %>% 
+  mutate(Term = ifelse(row_number()==1, Term, "")) %>%
+  select(Term,Ex,Tweet) %>% 
+  # mutate(tweet=gsub("[[:punct:]]", "", tweet))  %>% 
+ mutate(Tweet=str_sub(Tweet, 1, 280)) 
+
+
+Table2$Tweet<-iconv(Table2$Tweet, "latin1", "ASCII", sub="")
+# any(grepl("I_WAS_NOT_ASCII", iconv(Table2$Tweet, "latin1", "ASCII", sub="I_WAS_NOT_ASCII"))) 
+# %>% 
+#   mutate(text=gsub("\\\\", " ", tweet)
+
+      
+
+
+Table2<-knitr::kable(Table2, 
+      digits = 2,
+      align="ccl",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      longtable=T,
+      # longtable=T,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "Sample tweets erroneously considered DEI-related twitter activity. Tweets have been truncated at 140 characters and all twitter handles, urls, emojis, and emoticons have been removed for clarity; complete tweets are at (5).") %>%
+  kable_styling(bootstrap_options = c("hover"),
+                full_width = F,
+                latex_options=c("scale_down"),
+                repeat_header_continued = "\\textit{(Continued on Next Page...)}",
+                font_size = 10,
+               position = "left") %>% 
+  column_spec(column = 1, width = "4em") %>% 
+  column_spec(column = 2, width = "1em") %>% 
+  column_spec(column = 3, width = "50em") %>% 
+  row_spec(0, bold = T) %>%
+  collapse_rows(column = 1,
+                valign = "top",
+                latex_hline = c("none")) %>% 
+  collapse_rows(column = 2,
+                valign = "top",
+                latex_hline = c("none")) %>% 
+  row_spec(5,hline_after = TRUE) %>% 
+  row_spec(10,hline_after = TRUE) %>% 
+  row_spec(15,hline_after = TRUE) %>% 
+  row_spec(20,hline_after = TRUE) %>% 
+  row_spec(25,hline_after = TRUE) %>% 
+  row_spec(30,hline_after = TRUE) 
+
+Table2
+```
+<!-- \end{landscape} -->
+<!-- \newpage -->
+\elandscape
+\newpage
+\blandscape
+```{r Table3, echo=FALSE,message = FALSE,warning=FALSE}
+
+Table3<-nsf_div_grants %>% 
+  slice(1:20) %>% 
+  select(title) %>% 
+  mutate(title=gsub("dissertation research: ","",title))  %>% 
+  mutate(title=gsub("doctoral","",title))  %>% 
+  mutate(title=gsub("reu site: ","",title))  %>%
+  mutate(title=gsub("dissertation improvement grant: ","",title))  %>%
+  mutate(title=gsub("workshop/collaborative research: ","",title))  %>%
+  
+  rename("Grant Title"="title")  %>% 
+  mutate(Ex=row_number()) %>% 
+  relocate(Ex,.before=1) 
+ 
+
+Table3$`Grant Title`<-iconv(Table3$`Grant Title`, "latin1", "ASCII", sub="")
+# any(grepl("I_WAS_NOT_ASCII", iconv(Table3$`Grant Title`, "latin1", "ASCII", sub="I_WAS_NOT_ASCII"))) 
+
+
+Table3<-knitr::kable(Table3, 
+      digits = 2,
+      align="cl",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      # longtable=F,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "Ex non-DEI NSF grants that were included in the NAS database as 'DEI: Diversity-related'.") %>%
+  kable_styling(bootstrap_options = c("hover"),
+                full_width = T,
+                latex_options="scale_down",
+                font_size = 10,
+               position = "left") %>% 
+  column_spec(column = 1, width = "3em") %>% 
+  column_spec(column = 2, width = "60em") %>% 
+  row_spec(0, bold = T) 
+
+
+Table3
+```
+\elandscape
+\newpage
+<!-- ```{=tex} -->
+<!-- \newpage -->
+<!-- \elandscape -->
+<!-- ``` -->
+
+```{r Table4, echo=FALSE,message = FALSE,warning=FALSE}
+pm_sources_not_stem$Repository<-"PubMed"
+gs_sources_not_stem$Repository<-"Google Scholar"
+Table4<-bind_rows(gs_sources_not_stem,pm_sources_not_stem) %>% 
+  relocate(Repository,.before=1) %>% 
+  # relocate(n,.after=1) %>% 
+  rename(Source=source,
+         N=n) %>% 
+  group_by(Repository) %>% 
+  slice(1:20)  
+  
+  
+  # mutate(Repository = ifelse(row_number()==1, Repository, "")) %>% 
+  
+  
+
+Table4$Source<-iconv(Table4$Source, "latin1", "ASCII", sub="")
+# any(grepl("I_WAS_NOT_ASCII", iconv(Table4$Source, "latin1", "ASCII", sub="I_WAS_NOT_ASCII")))
+# %>% 
+#   mutate(gsub("[[:punct:]]", "", Title)) 
+
+
+# names(Table2)<-c("DEI Term","sample irrelevant tweet")
+
+Table4<-knitr::kable(Table4, 
+      digits = 2,
+      align="cll",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      longtable=F,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "A sample of non-STEM journals with articles that were treated as DEI-publications in STEM outlets (with the number of articles from each).") %>%
+  kable_styling(bootstrap_options = c("hover"),
+                full_width = T,
+                # latex_options="scale_down",
+                font_size = 10,
+               position = "center") %>% 
+  column_spec(column = 1, width = "7em") %>%
+  column_spec(column = 2, width = "20em") %>% 
+  column_spec(column = 3, width = "3em") %>% 
+  row_spec(0, bold = T) %>% 
+  collapse_rows(column = 1, 
+                valign = "top",
+                latex_hline = c("none")) %>% 
+  row_spec(20,hline_after=T)
+  
+
+Table4
+```
+
+
+
+<!-- ```{=tex} -->
+<!-- \newpage -->
+<!-- \blandscape -->
+<!-- ``` -->
+
+
+
+<!-- \elandscape -->
+<!-- \newpage -->
+\newpage
+\blandscape
+```{r Table5, echo=FALSE,message = FALSE,warning=FALSE}
+
+gs_nondei$year<-as.numeric(gs_nondei$year)
+pm_nondei$year<-as.numeric(pm_nondei$year)
+Table5<-bind_rows(gs_nondei,pm_nondei) %>% 
+  select(database,title, year,source) %>% 
+  group_by(database) %>% 
+   mutate(Ex=row_number()) %>% 
+  relocate(Ex,.before=2) %>% 
+  slice(1:10) %>% 
+  rename("Repository"="database",
+         Title=title,
+         Source=source,
+         Year=year)  %>% 
+  mutate(Repository = ifelse(row_number()==1, Repository, "")) %>% 
+  mutate(Title = gsub("[[:punct:]]", "", Title)) 
+
+Table5$Title<-iconv(Table5$Title, "latin1", "ASCII", sub="")
+# any(grepl("I_WAS_NOT_ASCII", iconv(Table5$Title, "latin1", "ASCII", sub="I_WAS_NOT_ASCII")))
+ # mutate(tweet=str_sub(tweet, 1, 70))
+
+
+
+Table5<-knitr::kable(Table5, 
+      digits = 2,
+      align="cclcl",
+      format="latex",
+      row.names = FALSE,
+      booktabs=T,
+      longtable=F,
+      linesep = "", #removes the blank line after every 5 lines
+      caption = "Sample non-DEI articles included by Goad and Chartwell in their analsyis of DEI-publications in STEM journals.") %>%
+  kable_styling(bootstrap_options = c("hover"),
+                full_width = F,
+                latex_options="scale_down",
+                font_size = 10,
+               position = "left") %>% 
+  column_spec(column = 1, width = "6em") %>%
+  column_spec(column = 2, width = "4em") %>%
+  column_spec(column = 3, width = "38em") %>% 
+  column_spec(column = 4, width = "3em") %>%
+  column_spec(column = 5, width = "13em") %>% 
+  row_spec(0, bold = T) %>% 
+  row_spec(10,hline_after=T)
+
+Table5
+```
+\elandscape
+
+
+<!-- ```{=tex} -->
+<!-- \elandscape -->
+<!-- \newpage -->
+<!-- ``` -->
+
+

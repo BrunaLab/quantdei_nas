@@ -1,49 +1,41 @@
 ---
-title: ""
-# title             : "Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars"
-# shorttitle        : "Flawed data validation by the NAS"
-
+title: ''
 author: "Emilio M. Bruna"
 fontsize: 12pt
-font: Times New Roman
-bibliography      : "NAS_response.bib"
-csl: "science.csl"
+output:
+  pdf_document: default
+  word_document: default
+linkcolor: darkmidnightblue
+urlcolor: darkmidnightblue
+bibliography: NAS_response.bib
+csl: bioscience.csl
 fig_caption: yes
 keep_tex: yes
-# site: bookdown::bookdown_site
 header-includes:
-# - \usepackage{fancyhdr}
-# - \pagestyle{fancy}
-# - \fancyfoot{}
-# - \fancyhead[R]{Supplement, p. \thepage}
-# - \fancyhead[L]{E. M. Bruna}
-# - \usepackage[default]{sourcesanspro}
-# - \usepackage{parskip}
+- \definecolor{darkmidnightblue}{rgb}{0.0, 0.2, 0.4}
 - \newcommand{\blandscape}{\begin{landscape}}
 - \newcommand{\elandscape}{\end{landscape}}
 - \AtBeginDocument{\let\maketitle\relax}
-# - \usepackage{sectsty} \allsectionsfont{\raggedright}
+- \usepackage{setspace}
 - \usepackage{titlesec}
 - \raggedbottom
 - \usepackage{lineno}
 - \linenumbers
-# - \linenumbers
 - \usepackage{caption}
-# - \usepackage{sectsty} \sectionfont{\centering\color{darkmidnightblue}}
-# - \usepackage{sectsty} \subsectionfont{\centering\color{darkmidnightblue}
 - \usepackage{sectsty} \sectionfont{\centering\color{black}\fontsize{14}{15}}
 - \usepackage{sectsty} \subsectionfont{\centering\color{black}\fontsize{12}{10}}
 - \usepackage{sectsty} \subsubsectionfont{\normalfont\centering\color{black}\fontsize{12}{10}}
 - \usepackage{caption}
 - \DeclareCaptionLabelFormat{Sformat}{#1 S#2}
-# - \usepackage{sectsty} \subsectionfont{\color{darkmidnightblue}}
 - \titlespacing{\section}{0pt}{10pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
-# - \titlespacing{\subsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
 - \titlespacing{\subsubsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
 - \setlength{\headheight}{14.49998pt}
-- \setlength\parindent{24pt}
-output: pdf_document
+# - \setlength\parindent{24pt}
+- \setlength{\parskip}{1em}
+# - \usepackage{indentfirst}
+font: Times New Roman
 mainfont: Times New Roman
+# indent: true
 ---
 
 
@@ -52,10 +44,13 @@ mainfont: Times New Roman
 # r_refs("NAS_response.bib")
 knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE)
 library(tidyverse)
-library(gridExtra)
+# library(gridExtra)
 library(kableExtra)
 library(egg)
-library(magick)
+# library(magick)
+library(glue)
+library(here)
+library(data.table)
 ```
 
 
@@ -83,10 +78,7 @@ nsf_div_sum<-grants_nsf_diversity %>% summarize(n=nrow(grants_nsf_diversity)) %>
 <!-- # suppress header on P1 -->
 \thispagestyle{empty}  
 
-
-
-
-# Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' made by the National Association of Scholars  
+# Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' in STEM
 
 &nbsp; 
 
@@ -103,27 +95,126 @@ nsf_div_sum<-grants_nsf_diversity %>% summarize(n=nrow(grants_nsf_diversity)) %>
 &nbsp;  
 &nbsp;  
 
+\newpage
+\doublespacing
+
 >> "\@arizonalumni: Good luck to former #UofA student and \@NASCAR champ \@KurtBusch as he attempts to race in both the Indy 500 and Coke 600. #BearDown!"  
 
 \raggedright
 
-&nbsp;  
-
+<!-- &nbsp;   -->
+\parindent=.35in
 Efforts to advance Diversity, Equity, and Inclusion (hereafter, DEI) at universities in the United States have emerged as another contentious issue in an increasingly polarized political climate [@diepFloridaGovernorAsked2023; @kumarFloridaBillsTarget2023; @keldermanPlanDismantle2023]. While individuals and organizations critical of DEI often claim that these programs have become increasingly pervasive and ideological [@goad2022ideological], this assertion is rarely supported with empirical evidence.  
-&nbsp;  
-The National Association of Scholars (i.e., NAS) recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological] which the authors claim is "the largest quantitative study of the growth of DEI-related language in the sciences" published to date. Goad and Chartwell searched university web pages and Twitter accounts, funding agency databases, and repositories for scientific literature to quantify changes over time in the use of "DEI-related terminology" (e.g.,"diversity", "equity", "justice","race"). They claim to show a dramatic increase in the use of these terms in university communications and the scientific literature since 2010, which they view as unambiguous empirical evidence of "ideological intensification" in the academic and scientific arenas [@goad2022ideological]. Goad and Chartwell conclude that if these trends continue, "the future of STEM, along with the rest of the academy, is almost certainly imperiled" (see @goad2022ideological, p. 47), so they encourage others to use their data-mining tools and database to conduct similar research. Since the report's release in December 2022, it has been widely hailed and distributed by prominent DEI critics such as Jordan Peterson and Christopher Rufo [@petersonJordanbpetersonRetweetNASorg2022;@rufoRealchrisrufoRetweetGoadMason2023].  
-&nbsp;  
-Goad and Chartwell made the laudable decision to post the code used to harvest and process the records used in their report [@nationalassociationofscholarsCodeQuantitativeStudy2022], along with the "clean" data used to graph the trends on which they base their conclusions [@nationalassociationofscholarsDataQuantitativeStudy2022], "so that other analysts can scrutinize the methods and replicate them" (see @goad2022ideological, p. 48). Having done so [@firkeJanitorSimpleTools2021; @rcoreteamLanguageEnvironmentStatistical2020; @wickhamWelcomeTidyverse2019; @rinkerTextcleanTextCleaning2018; @brunaCodeIdentifyingErrors2023, _Supplementary Materials and Methods_], I conclude that they failed to conduct even the most rudimentary data validation procedures, and that the "clean" data sets with which they conducted their analyses contain thousands of irrelevant records and duplications. Notable examples include the tweet that opened this letter - one of over `r fail_tweets_sum` about topics ranging from sporting events ("race") to members of the Supreme Court ("justice") to hedge funds ("equity", _Tables S1,S2_) - along with almost `r nsf_div_sum` NSF grants for ecological and evolutionary research on species "diversity" (_table S3_), and hundreds of "DEI articles in STEM journals" that were actually published in outlets such as _Critical Sociology_, _The Medical Law Review_, and _The Annual Review of Law and Social Science_ (_table S4_).  
-&nbsp;  
-Policy Institutes play a vital role in shaping higher education and research policy, but only when they put scholarship ahead of ideology. Goad and Chartwell's conclusions regarding the prevalence of DEI in STEM were based entirely on visualizations of fundamentally flawed datasets. The NAS should retract their report immediately; failure to do so undermines both the integrity and intellectual rigor that they and the report's authors claim to espouse as fundamental principles.  
 
+\parindent=.35in
+The National Association of Scholars (i.e., NAS) recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological] which the authors claim is "the largest quantitative study of the growth of DEI-related language in the sciences" published to date. Goad and Chartwell searched university web pages and Twitter accounts, funding agency databases, and repositories for scientific literature for instances of "DEI-related terminology" (e.g.,"diversity", "equity", "justice","race"). They claim to to have found a dramatic increase in the use of these terms in university communications and the scientific literature since 2010, which they conclude is unambiguous empirical evidence of "ideological intensification" in the academic and scientific arenas [@goad2022ideological]. They also conclude that if these trends continue, "the future of STEM, along with the rest of the academy, is almost certainly imperiled" (see @goad2022ideological, p. 47), and encourage others to use their data-mining tools and database to conduct similar research. Since the report's release in December 2022, it has been widely hailed and distributed by prominent DEI critics such as Jordan Peterson and Christopher Rufo.  
+
+\parindent=.35in
+Readers of the NAS report, especially those familiar with scientometric research, will quickly identify some glaring analytical shortcomings. These include the absence of any formal statistical tests, the use of a single (and questionable) "control" term in literature searches, and using the absolute number of DEI-related tweets or scholarly publications emerging from universities as the foundation of their analyses and graphs (Fig. 1). This last issue is particularly egregious  &mdash; the trends they purport to have documented, and which they attribute to institutions increasingly emphasizing "DEI ideology" over science, are simply artefacts of both Twitter use and publication numbers increasing dramatically since 2010. Put another way _one would expect to see increases like those they report even if the proportional effort made by institutions remained unchanged_, which is why it is essential to conduct analyses such as these with 'relativized' rather than absolute values.   
+
+\parindent=.35in
+That said, none of this actually matters in light of what I discovered when accepting a challenge made by the report's authors in their _Technical Appendix_ (p. 48&ndash;50).  
+
+\parindent=.35in
+Goad and Chartwell made the laudable decision to make their code publicly available [@nationalassociationofscholarsCodeQuantitativeStudy2022], along with the 'clean' data on which they base their conclusions [@nationalassociationofscholarsDataQuantitativeStudy2022], "so that other analysts can scrutinize the methods and replicate them" (@goad2022ideological, p. 48). When I did so, I found that they failed to conduct even the most rudimentary data validation procedures prior to text-mining. Using standard tools and simple methods, I found that their "clean" data sets contain thousands of irrelevant records and duplications [_Supplementary Materials and Methods_]. Notable examples include the tweet that opened this _Letter_ &mdash; one of over `r fail_tweets_sum` about topics ranging from sporting events ("race") to members of the Supreme Court ("justice") to hedge funds ("equity") &mdash; along with almost `r nsf_div_sum` NSF grants for ecological and evolutionary research on species "diversity", and hundreds of "DEI articles in STEM journals" that were actually published in outlets such as _Critical Sociology_, _The Medical Law Review_, and _The Annual Review of Law and Social Science_ (see _Supplementary Materials_).  
+
+\parindent=.35in
+Research from think tanks and advocacy organizations heavily influences policy, legislation, and contemporary debates related to scientific research and higher education [@baigBigDataEducation2020; @gandaraIdeologicalThinkTanks2019]. Computational approaches can greatly expand the scope and impact of this research, but only if the conclusions are based on robust methods and reliable data. Furthermore, methodological transparency by organizations publishing outside of the traditional scholarly literature are commendable, but only when accompanied by self-accountability. Because the conclusions in Goad and Chartwell's report were based solely on datasets that are clearly of questionable quality, the NAS should adhere to its principles and retract the report. Failure to do so would be an ironic example of what they claim has become pervasive in university settings: the prioritizing of ideology over intellectual rigor.  
 
 \newpage
+
 # References
+<!-- &nbsp;   -->
 \raggedright
 ::: {#refs custom-style="Bibliography"}
 :::
 
+```{r fig1, fig.align='center',fig.cap="(A) Subset of Figure 8 from the NAS report (\\textit{'Fig 8: DEI-related Tweets from all school-related accounts by DEI term'}); the floating y-axes accentuate negligible increases in very rare terms. (B) The same panels as in A, but with identical y-axes for all panels scaled by the frequency of the most common term. Note that both of these figures were made with the original, uncorrected NAS data, so the actual number of tweets for each term is actually much lower." ,fig.height = 8,fig.width=4}
 
-\newpage
+t <- fread("./out/twitter/tweets_clean.csv")
+library(lubridate)
+t[,good_date := as_date(created_at)]
+t[,good_date := ymd(good_date)]
+t[,short_name := str_remove(file, glue("./data/_twitter/twitter_account_dei_term/"))]
+t[,school := str_extract(short_name, "^.*?(?=--)")]
+t[,account := map_chr(short_name, ~str_split(.x, "--")[[1]][2])]
+t[,dei_term := str_remove(map_chr(short_name, ~str_split(.x, "--")[[1]][3]), "\\.Rds")]
+t[,month := lubridate::floor_date(good_date, "month")]
+# unique(t, by = "account")
+# t %>%  distinct(dei_term)
+
+# t %>%
+#   group_by(school, good_date) %>%
+#   summarise(total = n(), .groups = 'keep') %>%
+#   ggplot(., aes(x=good_date, y=total, group = 1)) + geom_line() +
+#   labs(title = "Fig 7. All DEI-related Tweets from all school-related accounts over time",
+#        x = "year", y = "count") +
+#   theme_classic() +
+#   theme(axis.text.x = element_text(angle = 55, hjust=1, size = 7)) +
+#   theme(plot.title = element_text(hjust = 0.5))
+# #
+# # ggsave(glue("{here}/graphs/Fig 7.png"), height = 4,  width = 6, dpi = 300)
+# # ggsave(glue("{here}/graphs/Fig 7.svg"), height = 4,  width = 6, dpi = 300)
+
+
+
+
+# terms excluded/kept
+# "advocacy", "multicultural","race","anti-racism","bias","systemic","BLM",
+# "intersectional","George Floyd","microaggression","oppression",
+# "Critical Race Theory","implicit bias","antiracism","white supremacy"
+
+t_for_fig<-t %>% filter(dei_term=="racism"|
+                          dei_term=="diversity"|
+                          dei_term=="equity"|
+                          dei_term=="gender"|
+                          dei_term=="inclusion"|
+                          dei_term=="justice"|
+                          dei_term=="privilege"|
+                          dei_term=="ally"|
+                          dei_term=="white fragility")
+
+plot_nas_original<-t_for_fig %>%
+  group_by(month, dei_term) %>%
+  summarise(total = n(), .groups = 'keep') %>%
+  filter(month > "2016-01-01") %>%
+  ggplot(., aes(x=month, y=total, group = 1)) + geom_line() +
+  # labs(title = "DEI-related Tweets from all school-related accounts \nby DEI term",x = "year", y = "count") +
+  labs(x = "year", y = "count") +
+  theme_classic() +
+  # theme(axis.text.x = element_text(angle = 55, hjust=1, size = 7)) +
+  # theme(plot.title = element_text(hjust = 0.5)) +
+  # facet_wrap(~dei_term, ncol = 3, scales = "free_y") + # original used 3 cols
+  facet_wrap(~dei_term, ncol = 1, scales = "free_y") +
+  scale_x_date(breaks = function(x) seq.Date(from = as.Date("2015-01-01"),
+                                             to = as.Date("2021-01-01"),
+                                             by = "1 year"), date_labels = "%y",
+               expand = c(0,0))
+#
+# plot_nas_redo<-t %>%
+plot_nas_redo<-t_for_fig %>% # used a reduced number of terms
+  group_by(month, dei_term) %>%
+  summarise(total = n(), .groups = 'keep') %>%
+  filter(month > "2016-01-01") %>%
+  ggplot(., aes(x=month, y=total, group = 1)) + geom_line() +
+  labs(x = "year", y = "count") +
+  theme_classic() +
+  # theme(axis.text.x = element_text(angle = 55, hjust=1, size = 7)) +
+  # theme(plot.title = element_text(hjust = 0.5)) +
+  # facet_wrap(~dei_term, ncol = 3, scales = "free_y") +
+  # facet_wrap(~dei_term, ncol = 3) +. #original used 3 cols, all terms
+  facet_wrap(~dei_term, ncol = 1) +
+  scale_x_date(breaks = function(x) seq.Date(from = as.Date("2015-01-01"),
+                                             to = as.Date("2021-01-01"),
+                                             by = "1 year"), date_labels = "%y",
+               expand = c(0,0))
+
+
+
+ggarrange(plot_nas_original, plot_nas_redo,ncol=2,
+          labels = c("A", "B"))
+# grid.arrange(plot_nas_original, plot_nas_redo,ncol = 2)
+
+```
+
 
