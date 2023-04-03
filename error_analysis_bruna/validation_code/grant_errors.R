@@ -211,7 +211,7 @@ diversity_terms = c("genetic", "species", "dna","rna ", "ecology", "food web",
 
 # add the additional search terms EXCEPT race
 dei_terms_diversity<-c(dei_terms,c("advocacy","ally","equity","justice",
-                                   "privilege","diverse"))
+                                   "privilege","diverse", "enhancing diversity"))
 
 
 diversity_nsf_fail <- diversity_nsf %>%
@@ -219,7 +219,7 @@ diversity_nsf_fail <- diversity_nsf %>%
   filter(!str_detect(title, paste(dei_terms_diversity, collapse = '|')))
 
 
-diversity_terms_wide<-c("")
+diversity_terms_wide<-c(" ")
 diversity_nsf_fail_wide <- diversity_nsf %>%
   filter(str_detect(title, paste(diversity_terms_wide, collapse = '|'))) %>%
   filter(!str_detect(title, paste(dei_terms_diversity, collapse = '|')))
