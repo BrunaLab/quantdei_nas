@@ -17,7 +17,15 @@ source(glue("{here}/code/setup.R"))
 t <- fread(glue("{here}/out/twitter/tweets_clean.csv")) 
 # names(t)
 
+library(lubridate)
+t <- t %>%
+  mutate(
+    created_at = ymd_hms(created_at),
+    year = format_ISO8601(created_at, precision = "y") 
+  )
+names(t)
 
+t<-t %>% relocate("year",.before=1)
 # column for keyword ------------------------------------------------------
 
 
@@ -87,6 +95,7 @@ race_fail <- race_tweets %>%
   filter(!str_detect(text, paste(dei_terms_race, collapse = '|')))
 
 
+
 # "justice" errors --------------------------------------------------------
 
 justice_tweets <- t %>% filter(category == "justice")
@@ -102,6 +111,7 @@ justice_fail <- justice_tweets %>%
   filter(str_detect(text, paste(justice_terms, collapse = '|'))) %>%
   filter(!str_detect(text, paste(dei_terms_justice, collapse = '|')))
 # 
+
 
 
 
@@ -282,3 +292,25 @@ twitter_fail_summary <- tweet_fails_by_cat %>%
   arrange(perc_fail) 
 
 write_csv(twitter_fail_summary, "./error_analysis_bruna/validation_output/twitter_notdei_summary.csv")
+
+
+
+names(tweet_fail)
+
+
+fail_over_time<-tweet_fail %>% 
+  select(year,category,text) %>% 
+  group_by(year, category) %>% 
+  tally() %>% 
+  arrange(category, year)
+
+
+errors_over_time_plot<-ggplot(data=fail_over_time, aes(x=year, y=n, group=category)) +
+  geom_line()+
+  geom_point()+
+  ggtitle("false positives over time (minimum)") +
+  theme_classic()+
+  geom_line(aes(color=category))+geom_point(aes(color=category))
+errors_over_time_plot
+
+

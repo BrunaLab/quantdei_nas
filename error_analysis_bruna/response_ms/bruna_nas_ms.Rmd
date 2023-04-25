@@ -69,12 +69,29 @@ twitter_fail_summary<-read_csv("./error_analysis_bruna/validation_output/twitter
 fail_tweets_sum<-twitter_fail_summary %>% summarize(n=sum(fail_tweets)) %>% mutate(n=round(n,-3))
 
 grants_nsf_diversity<-read_csv("./error_analysis_bruna/validation_output/grants_nsf_diversity.csv")
+gs_dupes<-read_csv("./error_analysis_bruna/validation_output/gs_dupes.csv",col_types = cols())
+gs_sources<-read_csv("./error_analysis_bruna/validation_output/gs_sources_all_summary.csv",col_types = cols())
+gs_sources_not_stem<-read_csv("./error_analysis_bruna/validation_output/gs_sources_not_stem_summary.csv",col_types = cols())
+                       
+
+pm_sources_not_stem<-read_csv("./error_analysis_bruna/validation_output/pm_sources_not_stem_summary.csv",col_types = cols())
+pm_dupes<-read_csv("./error_analysis_bruna/validation_output/pm_dupes.csv",col_types = cols())
+pm_sources<-read_csv("./error_analysis_bruna/validation_output/pm_sources_all_summary.csv",col_types = cols())
+pm_nondei<-read_csv("./error_analysis_bruna/validation_output/pm_nondei_examples.csv",col_types = cols())
+gs_nondei<-read_csv("./error_analysis_bruna/validation_output/gs_neurology_examples.csv",col_types = cols())
+pubs_dupes_summary<-read_csv("./error_analysis_bruna/validation_output/pubs_dupes_summary.csv",col_types = cols())
 
 fail_tweets_sum<-twitter_fail_summary %>% summarize(n=sum(fail_tweets)) %>% mutate(n=round(n,-3)) 
 nsf_div_sum<-grants_nsf_diversity %>% summarize(n=nrow(grants_nsf_diversity)) %>% mutate(n=round(n,-3))
 ```
 <!-- # suppress header on P1 -->
 \thispagestyle{empty}  
+
+### This is the submitted (author version) of an article accepted for publication in _BioScience_.  
+
+&nbsp; 
+&nbsp; 
+&nbsp; 
 
 # Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' in STEM
 
@@ -102,7 +119,8 @@ nsf_div_sum<-grants_nsf_diversity %>% summarize(n=nrow(grants_nsf_diversity)) %>
 
 <!-- &nbsp;   -->
 \parindent=.35in
-Efforts to advance Diversity, Equity, and Inclusion (hereafter, DEI) at universities in the United States have emerged as another contentious issue in an increasingly polarized political climate [@diepFloridaGovernorAsked2023; @kumarFloridaBillsTarget2023; @keldermanPlanDismantle2023]. While individuals and organizations critical of DEI often claim that these programs have become increasingly pervasive and ideological [@goad2022ideological], this assertion is rarely supported with empirical evidence.  
+
+Efforts to advance Diversity, Equity, and Inclusion (hereafter, DEI) at universities in the United States have emerged as another contentious issue in an increasingly polarized political climate [@diepFloridaGovernorAsked2023; @kumarFloridaBillsTarget2023; @keldermanPlanDismantle2023]. Many of the DEI programs now under fire were actually mandated and implemented decades ago by congress with broad bipartisan support [@wattsAchievingBroaderImpacts2015] in response to the dramatic lack of racial, ethnic, and gender parity in STEM disciplines [@palidInclusionPracticeSystematic2023]. More recent ones have been motivated by increasing evidence that diverse teams are more creative or have a competitive advantage [@fensterBroaderImpactsCome2014; @hundschellEffectsDiversityCreativity2022; @hongGroupsDiverseProblem2004], as well as employer demands for a diverse and culturally competent STEM workforce. Despite this long history and the demonstrable impact of many DEI programs, however, individuals and organizations critical of DEI programs often claim that these initiatives have become increasingly pervasive and ideological [@iyerUnderstandingAdvantagedGroups2022]. However, this assertion is rarely supported with empirical evidence. 
 
 \parindent=.35in
 The National Association of Scholars (i.e., NAS) recently published a report by Mason Goad and Bruce R. Chartwell [@goad2022ideological] which the authors claim is "the largest quantitative study of the growth of DEI-related language in the sciences" published to date. Goad and Chartwell searched university web pages and Twitter accounts, funding agency databases, and repositories for scientific literature for instances of "DEI-related terminology" (e.g.,"diversity", "equity", "justice", "race"). They claim to have found a dramatic increase in the use of these terms in university communications and the scientific literature since 2010, which they conclude is unambiguous empirical evidence of "ideological intensification" in the academic and scientific arenas [@goad2022ideological]. They also conclude that if these trends continue, "the future of STEM, along with the rest of the academy, is almost certainly imperiled" (see @goad2022ideological, p. 47), and encourage others to use their data-mining tools and database to conduct similar research. Since the report's release in December 2022, it has been widely hailed and distributed by prominent DEI critics such as Jordan Peterson and Christopher Rufo.  
@@ -114,7 +132,7 @@ Readers of the NAS report, especially those familiar with scientometric research
 That said, none of this actually matters in light of what I discovered when accepting a challenge made by the report's authors in their _Technical Appendix_ (p. 48&ndash;50).  
 
 \parindent=.35in
-Goad and Chartwell made the laudable decision to make their code publicly available [@nationalassociationofscholarsCodeQuantitativeStudy2022], along with the 'clean' data on which they base their conclusions [@nationalassociationofscholarsDataQuantitativeStudy2022], "so that other analysts can scrutinize the methods and replicate them" (@goad2022ideological, p. 48). When I did so, I found that they failed to conduct even the most rudimentary data validation procedures prior to text-mining. Using standard tools and simple methods, I found that their "clean" data sets contain thousands of irrelevant records and duplications [_Supplementary Materials and Methods_]. Notable examples include the tweet that opened this _Letter_ &mdash; one of over `r fail_tweets_sum` about topics ranging from sporting events ("race") to members of the Supreme Court ("justice") to hedge funds ("equity") &mdash; along with almost `r nsf_div_sum` NSF grants for ecological and evolutionary research on species "diversity", and hundreds of "DEI articles in STEM journals" that were actually published in outlets such as _Critical Sociology_, _The Medical Law Review_, and _The Annual Review of Law and Social Science_ (see _Supplementary Materials_).  
+Goad and Chartwell made the laudable decision to make their code publicly available [@nationalassociationofscholarsCodeQuantitativeStudy2022], along with the 'clean' data on which they base their conclusions [@nationalassociationofscholarsDataQuantitativeStudy2022], "so that other analysts can scrutinize the methods and replicate them" (@goad2022ideological, p. 48). When I did so, I found that they failed to conduct even the most rudimentary data validation procedures prior to text-mining. Using standard tools and simple methods, I found that their "clean" data sets contain thousands of irrelevant records and duplications [_Supplementary Materials and Methods_]. Notable examples include the tweet that opened this _Letter_ &mdash; one of over `r as.integer(fail_tweets_sum)` about topics ranging from sporting events ("race") to members of the Supreme Court ("justice") to hedge funds ("equity") &mdash; along with more than `r nsf_div_sum` NSF grants for ecological and evolutionary research on species "diversity". Others can be found in their dataset of "DEI articles in STEM journals", which included at least `r as.integer(sum(pubs_dupes_summary$n_original, scientific=FALSE)-sum(pubs_dupes_summary$n_deduped))` duplicated records (inflating their estimate of DEI-related publications in Google Scholar and PubMed by `r pubs_dupes_summary %>% filter(dataset=="gs") %>% select(perc_inflated)`% and `r pubs_dupes_summary %>% filter(dataset=="pubmed") %>% select(perc_inflated)`%, respectively), hundreds of articles published in cultural studies, humanities, and legal journals such as _Critical Sociology_, _The Medical Law Review_, and _The Annual Review of Law and Social Science_, and thousands of non-DEI articles on topics ranging from palliative care for cancer patients to transcatheter aortic valve replacements (see _Supplementary Materials_).   
 
 \parindent=.35in
 Research from think tanks and advocacy organizations heavily influences policy, legislation, and contemporary debates related to scientific research and higher education [@baigBigDataEducation2020; @gandaraIdeologicalThinkTanks2019]. Computational approaches can greatly expand the scope and impact of this research, but only if the conclusions are based on robust methods and reliable data. Furthermore, methodological transparency by organizations publishing outside of the traditional scholarly literature are commendable, but only when accompanied by self-accountability. Because the conclusions in Goad and Chartwell's report were based solely on datasets that are clearly of questionable quality, the NAS should adhere to its principles and retract the report. Failure to do so would be an ironic example of what they claim has become pervasive in university settings: the prioritizing of ideology over intellectual rigor.  
@@ -127,7 +145,7 @@ Research from think tanks and advocacy organizations heavily influences policy, 
 ::: {#refs custom-style="Bibliography"}
 :::
 
-```{r fig1, fig.align='center',fig.cap="(A) Subset of Figure 8 from the NAS report (\\textit{'Fig 8: DEI-related Tweets from all school-related accounts by DEI term'}) with floating y-axes that accentuate negligible increases in very rare terms. (B) The same panels as in A but with identical y-axes scaled by the frequency of the most common term. Note that both of these figures were made with the original, uncorrected NAS data, so the actual number of tweets for each term is much lower." ,fig.height = 8,fig.width=4}
+```{r fig1, fig.align='center',fig.cap="(A) Subset of Figure 8 from the NAS report (\\textit{'Fig 8: DEI-related Tweets from all school-related accounts by DEI term'}); the floating y-axes accentuate negligible increases in very rare terms. (B) The same panels but with identical y-axes scaled by the frequency of the most common term. Note that both sets of figures were made with the original, uncorrected NAS data, so the actual number of tweets for each term is much lower." ,fig.height = 8,fig.width=4}
 
 t <- fread("./out/twitter/tweets_clean.csv")
 library(lubridate)
