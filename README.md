@@ -1,5 +1,7 @@
 
-## Code for identifying errors in datasets used in the report _Quantitative Study of Diversity, Equity and Inclusion in STEM Subjects in American Universities_ (National Association of Scholars, 2022). **NOTE:** This is a fork of the origal NAS repo; **_I am not affiliated with the NAS in any way._** This repository was used to identify errors and flaws in thier data processing and analysis reported in Bruna, E. M. 2023. _Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' in STEM_. _Bioscience_
+## Code for identifying errors in datasets used in the report _Quantitative Study of Diversity, Equity and Inclusion in STEM Subjects in American Universities_ (National Association of Scholars, 2022).  
+
+**NOTE:** This is a fork of the origal NAS repo; **_I am not affiliated with the NAS in any way._** This repository was used to identify errors and flaws in thier data processing and analysis reported in Bruna, E. M. 2023. _Fundamental errors of data collection & validation undermine claims of 'Ideological Intensification' in STEM_. _Bioscience_
 
 A prelimary summary of the mind-boggling and amateurish errors can be found on the twitter feed of EM Bruna (@BrunaLab). The prreprint of the _Bioscience_ manuscript detailing the analysis and errors [can be found here](https://osf.io/preprints/metaarxiv/4jsca/). 
 
