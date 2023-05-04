@@ -1,9 +1,11 @@
-library(ggpubr)
+
 library(tidyverse)
 library(data.table)
 library(lubridate)
 library(glue)
-library(egg)
+library(cowplot)
+# library(ggpubr)
+# library(egg)
 # library(magick)
 
 # library(here)
@@ -51,13 +53,17 @@ t_for_fig<-t %>% filter(dei_term=="racism"|
                           dei_term=="ally"|
                           dei_term=="white fragility")
 
+
+
 plot_nas_original<-t_for_fig %>%
   group_by(month, dei_term) %>%
   summarise(total = n(), .groups = 'keep') %>%
   filter(month > "2016-01-01") %>%
   ggplot(., aes(x=month, y=total, group = 1)) + geom_line() +
   # labs(title = "DEI-related Tweets from all school-related accounts \nby DEI term",x = "year", y = "count") +
-  labs(x = "year", y = "count") +
+  labs(x = "year", 
+       y = "count",
+       tag = "A")+
   theme_classic() +
   # theme(axis.text.x = element_text(angle = 55, hjust=1, size = 7)) +
   # theme(plot.title = element_text(hjust = 0.5)) +
@@ -66,7 +72,11 @@ plot_nas_original<-t_for_fig %>%
   scale_x_date(breaks = function(x) seq.Date(from = as.Date("2015-01-01"),
                                              to = as.Date("2021-01-01"),
                                              by = "1 year"), date_labels = "%y",
-               expand = c(0,0))
+               expand = c(0,0))+
+  theme(plot.margin = margin(1,1,1,1, "cm"))+
+  theme(
+    # panel.background = element_rect(fill = "white"),
+    plot.margin = margin(t = 0.5, r = 1, b = 0.5, l = 0.0, unit = "cm"))
 #
 # plot_nas_redo<-t %>%
 plot_nas_redo<-t_for_fig %>% # used a reduced number of terms
@@ -74,7 +84,9 @@ plot_nas_redo<-t_for_fig %>% # used a reduced number of terms
   summarise(total = n(), .groups = 'keep') %>%
   filter(month > "2016-01-01") %>%
   ggplot(., aes(x=month, y=total, group = 1)) + geom_line() +
-  labs(x = "year", y = "count") +
+  labs(x = "year", 
+       y = "count",
+       tag = "B")+
   theme_classic() +
   # theme(axis.text.x = element_text(angle = 55, hjust=1, size = 7)) +
   # theme(plot.title = element_text(hjust = 0.5)) +
@@ -84,15 +96,26 @@ plot_nas_redo<-t_for_fig %>% # used a reduced number of terms
   scale_x_date(breaks = function(x) seq.Date(from = as.Date("2015-01-01"),
                                              to = as.Date("2021-01-01"),
                                              by = "1 year"), date_labels = "%y",
-               expand = c(0,0))
+               expand = c(0,0))+
+  theme(
+    plot.margin = margin(t = 0.5, r = 0.5, b = 0.5, l = 1, unit = "cm"))
 
+# Alternatives to make and save figures in publication quality 
+# fig1<-ggarrange(plot_nas_original, plot_nas_redo,ncol=2,
+#           labels = c("A", "B") %>%
+#             ggexport(filename = "./error_analysis_bruna/response_ms/fig1.pdf")
+# fig1<-ggarrange(plot_nas_original, plot_nas_redo,ncol=2,
+#                 labels = c("A", "B"))
+# library(patchwork)
+# fig1<-plot_nas_original+plot_nas_redo + plot_layout(ncol = 2)
 
+# library(cowplot)
+fig1<-plot_grid(plot_nas_original,plot_nas_redo, ncol = 2, align = "hv")
 
-fig1<-ggarrange(plot_nas_original, plot_nas_redo,ncol=2,
-          labels = c("A", "B") %>%
-            ggexport(filename = "./error_analysis_bruna/response_ms/fig1.pdf", res = 600)
-          )
-fig1
 # grid.arrange(plot_nas_original, plot_nas_redo,ncol = 2)
-ggsave("./error_analysis_bruna/response_ms/plot_nas_redo.pdf", width = 6, height = 9, units = "in", dpi = 600)
+
+ggsave("./error_analysis_bruna/response_ms/fig1.pdf", fig1,width = 6, height = 9, units = "in", dpi = 600)
+# dev.off()
+
+ggsave("./error_analysis_bruna/response_ms/fig1.tiff", fig1,width = 6, height = 9, units = "in", dpi = 600)
 # dev.off()

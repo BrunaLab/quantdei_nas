@@ -1,0 +1,42 @@
+---
+title: ''
+author: "Emilio M. Bruna"
+fontsize: 12pt
+output:
+  pdf_document: default
+  word_document: default
+linkcolor: darkmidnightblue
+urlcolor: darkmidnightblue
+fig_caption: yes
+keep_tex: yes
+header-includes:
+- \definecolor{darkmidnightblue}{rgb}{0.0, 0.2, 0.4}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+- \AtBeginDocument{\let\maketitle\relax}
+- \usepackage{setspace}
+- \usepackage{titlesec}
+- \raggedbottom
+- \usepackage{lineno}
+- \linenumbers
+- \usepackage{caption}
+- \usepackage{sectsty} \sectionfont{\centering\color{black}\fontsize{14}{15}}
+- \usepackage{sectsty} \subsectionfont{\centering\color{black}\fontsize{12}{10}}
+- \usepackage{sectsty} \subsubsectionfont{\normalfont\centering\color{black}\fontsize{12}{10}}
+- \usepackage{caption}
+- \DeclareCaptionLabelFormat{Sformat}{#1 S#2}
+- \titlespacing{\section}{0pt}{10pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+- \titlespacing{\subsubsection}{0pt}{8pt plus 2pt minus 1pt}{0pt plus 1pt minus 1pt}
+- \setlength{\headheight}{14.49998pt}
+- \setlength{\parskip}{1em}
+font: Times New Roman
+mainfont: Times New Roman
+# indent: true
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE)
+```
+
+**CRediT author statement:** Conceptualization, Methodology, Programming, Validation, Data Curation, and Writing (Original Draft, Review & Editing, Visualization) by Emilio M. Bruna.
